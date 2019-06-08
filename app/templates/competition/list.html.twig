@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block article %}
+    <div class="grid-y grid-margin-y">
+        {{ form_start(search) }}
+            <div class="cell grid-x grid-margin-x grid-padding-y">
+                <div class="cell small-3">
+                    {{ form_row(search.date, {'class': 'cell small-3'}) }}
+                </div>
+                <div class="cell small-3">
+                    {{ form_row(search.region, {'class': 'cell small-3'}) }}
+                </div>
+                <div class="cell small-1">
+                    {{ form_row(search.class) }}
+                </div>
+                <div class="cell small-3">
+                    {{ form_row(search.name, {'class': 'cell small-3'}) }}
+                </div>
+                <div class="cell small-1">
+                    <button type="submit" class="cell small-1 button" style="font-size: 0.8rem"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="cell small-1">
+                    <button type="button" class="cell small-1 button success" style="font-size: 0.8rem;">
+                        <a href="{{ path('admin_competitions_new') }}" style="color: #FFFFFF">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </button>
+                </div>
+            </div>
+        {{ form_end(search) }}
+
+        <br>
+
+        {% for entity in competitions %}
+            <div class="cell grid-x grid-padding-x">
+                <div class="small-1 date-box" style="border-right: 1px solid #0a0a0a">
+                    <div class="h3" style="margin: 0px">{{ entity.date|date('d.m') }}</div>
+                    <div class="small-3 text-center" style="margin: 0px">{{ entity.date|date('Y') }}</div>
+                </div>
+                <div class="cell small-11">
+                    <a class="grid-margin-y" href="{{ path('competitions_show', {'id' : entity.id}) }}">
+                        <p class="h3" style="margin: 0px">{{ entity.name }}</p>
+                    </a>
+                    <div class="grid-x grid-margin-y">
+                        <div class="cell small-3 subheader">{{ entity.region.name }}</div>
+                        <span class="cell small-3 subheader">Клас: {{ entity.formattedClasses }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

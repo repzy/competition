@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% macro renderComment(comment) %}
+{% import _self as macros %}
+<div class="media-object" style="border-left: solid 1px #0a0a0a">
+    <div class="media-object-section">
+        <div>email@gmail.com</div>
+        <p>{{ comment.text }}</p>
+        {#<div>відповісти</div>#}
+
+        {% if comment.children|length %}
+            {% for child in comment.children %}
+                {{ macros.renderComment(child) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{% import _self as macros %}
+
+{% block article %}
+    <div class="grid-y grid-margin-y">
+        <div class="cell grid-x grid-padding-x">
+            <div class="cell date-box small-1" style="background-color: #5eb5e0">
+                <div class="text-center center-vertically">
+                    {{ competition.date|date('d') }}<br>
+                    {{ competition.date|date('M') }}
+                </div>
+            </div>
+            <div class="cell small-11">
+                <p class="h3" style="margin: 0px">{{ competition.name }}</p>
+                <div class="grid-x grid-margin-y" style="">
+                    <div class="cell small-3 subheader">{{ competition.region.name }}</div>
+                    <span class="cell small-3 subheader">Клас: {{ competition.formattedClasses }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cell small-12">
+            {{ competition.description}}
+        </div>
+
+        <div class="cell small-12" style="">
+            <h3>Документи</h3>
+            <div class="grid-y">
+                {% for attachment in competition.attachments %}
+                    <div class="grid-x cell grid-padding-x">
+                        <a href="{{ attachment.path }}" style="background-color: #d6d6d6">
+                            <a href="#" class="hollow button" style="border-radius: 0px; ">
+                                <i class="fas fa-download fa-2x"></i>
+                            </a>
+                            <button class="cell small-11 hollow button expanded" style="text-align: left; border-radius: 0; border-left-width: 0">
+                                {{ attachment.path }}
+                            </button>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="cell small-12">
+            <h3>Коментарі</h3>
+
+            {% for comment in comments %}
+                {{ macros.renderComment(comment) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

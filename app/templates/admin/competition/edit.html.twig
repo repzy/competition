@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block _competition_attachments_entry_widget %}
+    <div class="cell grid-x grid-padding-x grid-margin-y">
+        {% if form.vars.value %}
+            <div class="cell remove_attachment" style="width: 1%; cursor: pointer"><i class="fas fa-times"></i></div>
+            <div class="cell small-11">{{ form.vars.value.path }}</div>
+            {{ form_widget(form, {'attr' : {'class' : 'show-for-sr'}}) }}
+        {% else %}
+            <div class="cell">
+                {{ form_widget(form) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block article %}
+    <div class="">
+        {{ form_start(form) }}
+            {{ form_row(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            let $collectionHolder;
+            let $addTagButton = $('<button type="button" class="button add_attachment small">Додати</button>');
+            let $newLinkLi = $('<div></div>').append($addTagButton);
+
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('#competition_attachments');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addTagButton.on('click', function(e) {
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder, $newLinkLi);
+            });
+
+            function addTagForm($collectionHolder, $newLinkLi) {
+                // Get the data-prototype explained earlier
+                let prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                let index = $collectionHolder.data('index');
+
+                let newForm = prototype;
+                // You need this only if you didn't set 'label' => false in your tags field in TaskType
+                // Replace '__name__label__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                // newForm = newForm.replace(/__name__label__/g, index);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                newForm = newForm.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+                $newLinkLi.before(newForm);
+            }
+
+            $('.remove_attachment').click(function () {
+                $(this).parent().remove();
+            })
+        });
+    </script>
+{% endblock %}

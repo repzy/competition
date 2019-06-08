@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Competitons{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            {% block header %}
+                <div class="header top-bar topbar-center-logo" >
+                    <div class="top-bar-left">
+                        <ul class="menu">
+                            <li class="float-center"><a href="{{ path('competitions_list') }}">Competitions</a></li>
+                        </ul>
+                    </div>
+                    <div class="top-bar-right">
+                        <ul class="menu">
+                            <li><a class="button" href="{{ path('app_login') }}">Login</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% endblock %}
+        </header>
+
+        <br>
+
+        <article class="grid-container">
+            {% block article %}
+            {% endblock %}
+        </article>
+
+        <br>
+
+        <footer>
+            {% block footer %}
+            {% endblock %}
+        </footer>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

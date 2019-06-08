@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block article %}
+    <div class="row">
+        <table class="">
+            <thead>
+                <th>Назва</th>
+                <th>Область</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <a href="{{ path('admin_competitions_new') }}" class="button success small expanded" style="margin: 0px">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% for competition in competitions %}
+                    <tr>
+                        <td>{{ competition.name }}</td>
+                        <td>{{ competition.region.name }}</td>
+                        <td>
+                            <a href="{{ path('admin_competitions_edit', {'id' : competition.id}) }}"><i class="far fa-edit"></i></a>
+                            <a href="{{ path('admin_competitions_delete', {'id' : competition.id}) }}"><i class="fas fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
