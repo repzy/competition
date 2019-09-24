@@ -5,8 +5,6 @@ RUN apt-get update && apt-get install -y \
 		file \
 		gettext \
 		git \
-#		nodejs \
-#		yarn \
 	;
 
 RUN set -eux; \
@@ -33,3 +31,4 @@ RUN set -eux; \
     ;
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer install
