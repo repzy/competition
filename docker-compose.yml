@@ -8,7 +8,9 @@ services:
         ports: 
             - "3306:3306"
         environment:
+            MYSQL_DATABASE: dockertest
             MYSQL_ROOT_PASSWORD: example
+            MYSQL_HOST: 127.0.0.1
 
     php:
         build: ./docker/php
@@ -34,11 +36,11 @@ services:
             - php
 
     node:
-        image: node:12.3-alpine
+        image: node:12.10-alpine
         container_name: dockertest_node
         ports:
           - "3000:3000"
-        command: "yarn install && yarn run watch"
+        command: "yarn run watch"
         working_dir: /var/www/app
         environment:
             NODE_ENV: development
