@@ -10,7 +10,6 @@ services:
         environment:
             MYSQL_DATABASE: dockertest
             MYSQL_ROOT_PASSWORD: example
-            MYSQL_HOST: 127.0.0.1
 
     php:
         build: ./docker/php
@@ -27,7 +26,7 @@ services:
         image: nginx:latest 
         container_name: dockertest_ngnix
         ports:
-            - "80:80"
+            - "8080:80"
         volumes:
             - ./app:/var/www/app
             - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
@@ -40,10 +39,11 @@ services:
         container_name: dockertest_node
         ports:
           - "3000:3000"
-        command: "yarn run watch"
         working_dir: /var/www/app
         environment:
             NODE_ENV: development
+        entrypoint: ["sh", "-c"]
+        command: ["yarn install && yarn watch"]
         volumes:
             - ./app:/var/www/app
             - ./app/node_modules:/var/www/app/node_modules
