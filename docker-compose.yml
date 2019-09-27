@@ -18,6 +18,8 @@ services:
             - "9000:9000"
         volumes:
             - ./app:/var/www/app
+        entrypoint: ["sh", "-c"]
+        command: ["composer install && php-fpm"]
         working_dir: /var/www/app
         links:
             - db
