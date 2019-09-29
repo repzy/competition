@@ -64,6 +64,7 @@ class Competition
     {
         $this->classes = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): ?int

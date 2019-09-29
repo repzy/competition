@@ -17,9 +17,32 @@
 {% endblock %}
 
 {% block article %}
-    <div class="">
+    <div class="form-group">
         {{ form_start(form) }}
-            {{ form_row(form) }}
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class':'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date, {'attr': {'class':'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.classes) }}
+            {{ form_widget(form.classes, {'attr': {'class':''}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.region) }}
+            {{ form_widget(form.region, {'attr': {'class':'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.attachments) }}
+            {{ form_widget(form.attachments, {'attr': {'class':'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class':'form-control'}}) }}
+        </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

@@ -29,6 +29,9 @@ class CompetitionType extends AbstractType
             ])
             ->add('classes', EntityType::class, [
                 'label' => 'Клас',
+                'choice_attr' => function($choice, $key, $value) {
+                    return ['class' => 'form-check-inline'];
+                },
                 'class' => CompetitionClass::class,
                 'choice_label' => 'name',
                 'multiple' => true,

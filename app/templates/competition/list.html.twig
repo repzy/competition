@@ -1,31 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block article %}
-    <div class="grid-y grid-margin-y">
-        {{ form_start(search) }}
-            <div class="cell grid-x grid-margin-x grid-padding-y">
-                <div class="cell small-3">
-                    {{ form_row(search.date, {'class': 'cell small-3'}) }}
-                </div>
-                <div class="cell small-3">
-                    {{ form_row(search.region, {'class': 'cell small-3'}) }}
-                </div>
-                <div class="cell small-1">
-                    {{ form_row(search.class) }}
-                </div>
-                <div class="cell small-3">
-                    {{ form_row(search.name, {'class': 'cell small-3'}) }}
-                </div>
-                <div class="cell small-1">
-                    <button type="submit" class="cell small-1 button" style="font-size: 0.8rem"><i class="fas fa-search"></i></button>
-                </div>
-                <div class="cell small-1">
-                    <button type="button" class="cell small-1 button success" style="font-size: 0.8rem;">
-                        <a href="{{ path('admin_competitions_new') }}" style="color: #FFFFFF">
-                            <i class="fas fa-plus"></i>
-                        </a>
-                    </button>
-                </div>
+    <div class="">
+        {{ form_start(search, {'attr': {'class': 'form-inline'}}) }}
+            <div class="">
+                {{ form_row(search.date, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="">
+                {{ form_row(search.region, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="">
+                {{ form_row(search.class, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="">
+                {{ form_row(search.name, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="">
+                <button type="submit" class="btn btn-primary" style="font-size: 0.8rem">Пошук<i class="fas fa-search"></i></button>
+            </div>
+            <div class="">
+                <button type="button" class="btn btn-success" style="font-size: 0.8rem;">
+                    <a href="{{ path('admin_competitions_new') }}" style="color: #FFFFFF">
+                        Створити
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </button>
             </div>
         {{ form_end(search) }}
 
