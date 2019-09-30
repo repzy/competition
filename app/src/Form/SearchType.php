@@ -20,18 +20,14 @@ class SearchType extends AbstractType
                 'choice_label' => 'name',
                 'label' => false,
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Область'
-                ]
+                'placeholder' => 'Область'
             ])
             ->add('class', EntityType::class, [
                 'class' => CompetitionClass::class,
                 'choice_label' => 'name',
                 'label' => false,
                 'required' => false,
-                'attr' => [
-                    'placeholder' => 'Клас'
-                ]
+                'placeholder' => 'Клас',
             ])
             ->add('name', TextType::class, [
                 'label' => false,
@@ -42,7 +38,11 @@ class SearchType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => 'Дата'
+                ],
                 'label' => false,
+                'html5' => false,
                 'required' => false,
             ])
         ;

@@ -1,48 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block article %}
-    <div class="">
-        {{ form_start(search, {'attr': {'class': 'form-inline'}}) }}
-            <div class="">
-                {{ form_row(search.date, {'attr': {'class': 'form-control'}}) }}
+    {{ form_start(search, {'attr': {'class': ''}}) }}
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                {{ form_row(search.date, {'attr': {'class': 'form-control pickaday-datepicker'}}) }}
             </div>
-            <div class="">
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
                 {{ form_row(search.region, {'attr': {'class': 'form-control'}}) }}
             </div>
-            <div class="">
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
                 {{ form_row(search.class, {'attr': {'class': 'form-control'}}) }}
             </div>
-            <div class="">
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
                 {{ form_row(search.name, {'attr': {'class': 'form-control'}}) }}
             </div>
-            <div class="">
-                <button type="submit" class="btn btn-primary" style="font-size: 0.8rem">Пошук<i class="fas fa-search"></i></button>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-lg" style="font-size: 0.8rem">Пошук<i class="fas fa-search"></i></button>
             </div>
-            <div class="">
-                <button type="button" class="btn btn-success" style="font-size: 0.8rem;">
-                    <a href="{{ path('admin_competitions_new') }}" style="color: #FFFFFF">
-                        Створити
-                        <i class="fas fa-plus"></i>
-                    </a>
-                </button>
-            </div>
-        {{ form_end(search) }}
-
-        <br>
-
-        {% for entity in competitions %}
-            <div class="mb-5">
-                <div class="">
-                    <a class="h2 mb-1 text-dark" href="{{ path('competitions_show', {'id' : entity.id}) }}">
-                        <span class="" style="">{{ entity.name }}</span>
-                    </a>
-                </div>
-                <div class="text-muted">
-                    <span class="d-inline-block">{{ entity.date|date('d.m.Y') }} &bull;</span>
-                    <span class="d-inline-block">{{ entity.region.name }} &bull;</span>
-                    <span class="d-inline-block">Клас: {{ entity.formattedClasses }}</span>
-                </div>
-            </div>
-        {% endfor %}
+        </div>
     </div>
+    {{ form_end(search) }}
+    {% for entity in competitions %}
+        <div class="mb-5">
+            <div class="">
+                <a class="h2 mb-1 text-dark" href="{{ path('competitions_show', {'id' : entity.id}) }}">
+                    <span class="" style="">{{ entity.name }}</span>
+                </a>
+            </div>
+            <div class="text-muted">
+                <span class="d-inline-block">{{ entity.date|date('d.m.Y') }} &bull;</span>
+                <span class="d-inline-block">{{ entity.region.name }} &bull;</span>
+                <span class="d-inline-block">Клас: {{ entity.formattedClasses }}</span>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

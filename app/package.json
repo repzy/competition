@@ -16,5 +16,9 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "moment": "^2.24.0",
+        "pikaday": "^1.8.0"
     }
 }
