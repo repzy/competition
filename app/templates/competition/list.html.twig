@@ -31,19 +31,16 @@
         <br>
 
         {% for entity in competitions %}
-            <div class="cell grid-x grid-padding-x">
-                <div class="small-1 date-box" style="border-right: 1px solid #0a0a0a">
-                    <div class="h3" style="margin: 0px">{{ entity.date|date('d.m') }}</div>
-                    <div class="small-3 text-center" style="margin: 0px">{{ entity.date|date('Y') }}</div>
-                </div>
-                <div class="cell small-11">
-                    <a class="grid-margin-y" href="{{ path('competitions_show', {'id' : entity.id}) }}">
-                        <p class="h3" style="margin: 0px">{{ entity.name }}</p>
+            <div class="mb-5">
+                <div class="">
+                    <a class="h2 mb-1 text-dark" href="{{ path('competitions_show', {'id' : entity.id}) }}">
+                        <span class="" style="">{{ entity.name }}</span>
                     </a>
-                    <div class="grid-x grid-margin-y">
-                        <div class="cell small-3 subheader">{{ entity.region.name }}</div>
-                        <span class="cell small-3 subheader">Клас: {{ entity.formattedClasses }}</span>
-                    </div>
+                </div>
+                <div class="text-muted">
+                    <span class="d-inline-block">{{ entity.date|date('d.m.Y') }} &bull;</span>
+                    <span class="d-inline-block">{{ entity.region.name }} &bull;</span>
+                    <span class="d-inline-block">Клас: {{ entity.formattedClasses }}</span>
                 </div>
             </div>
         {% endfor %}

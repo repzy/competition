@@ -37,7 +37,7 @@ class CompetitionController extends AbstractController
     public function listAction()
     {
         /** @var Competition[] $competitions */
-        $competitions = $this->competitionRepository->findAll();
+        $competitions = $this->competitionRepository->search([]);
 
         return $this->render('admin/competition/list.html.twig', [
             'competitions' => $competitions

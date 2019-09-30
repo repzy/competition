@@ -1,32 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block article %}
-    <div class="row">
-        <table class="">
-            <thead>
-                <th>Назва</th>
-                <th>Область</th>
-                <th></th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="3" class="text-center">
-                        <a href="{{ path('admin_competitions_new') }}" class="button success small expanded" style="margin: 0px">
-                            <i class="fas fa-plus-circle"></i>
-                        </a>
-                    </td>
-                </tr>
-                {% for competition in competitions %}
-                    <tr>
-                        <td>{{ competition.name }}</td>
-                        <td>{{ competition.region.name }}</td>
-                        <td>
-                            <a href="{{ path('admin_competitions_edit', {'id' : competition.id}) }}"><i class="far fa-edit"></i></a>
-                            <a href="{{ path('admin_competitions_delete', {'id' : competition.id}) }}"><i class="fas fa-times"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    {% for competition in competitions %}
+        <div class="mb-5">
+            <div class="">
+                <a class="h2 mb-1 text-dark" href="{{ path('admin_competitions_edit', {'id' : competition.id}) }}">
+                    <span class="" style="">{{ competition.name }}</span>
+                </a>
+            </div>
+            <div class="text-muted">
+                <span class="d-inline-block">{{ competition.date|date('d.m.Y') }} &bull;</span>
+                <span class="d-inline-block">{{ competition.region.name }} &bull;</span>
+                <span class="d-inline-block">Клас: {{ competition.formattedClasses }}</span>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
