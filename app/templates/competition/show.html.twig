@@ -31,32 +31,34 @@
             </div>
         </div>
 
-        <div class="">
-            {{ competition.description}}
+        <div class="mb-5">
+            {{ competition.description|raw}}
         </div>
 
-        <div class="" style="">
-            <h3>Документи</h3>
-            <div class="grid-y">
+        <div class="mb-5" style="">
+            <h3>Файли</h3>
+            {% if competition.attachments|length %}
                 {% for attachment in competition.attachments %}
-                    <div class="">
-                        <a href="{{ attachment.path }}">
-                            <a href="#" class="">
-                                <i class="fas fa-download fa-2x"></i>
-                            </a>
-                            <button class="" style="text-align: left; border-radius: 0; border-left-width: 0">
-                                {{ attachment.path }}
-                            </button>
-                        </a>
+                    <div class="alert alert-light pl-0">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <a href="{{ attachment.path }}" class="btn btn-primary">
+                                    Завантажити
+                                </a>
+                            </div>
+                            <div class="col-auto">{{ attachment.path }}</div>
+                        </div>
                     </div>
                 {% endfor %}
-            </div>
-
+            {% else %}
+                <div class="alert alert-light text-center">
+                    Файли відсутні
+                </div>
+            {% endif %}
         </div>
 
         <div class="">
             <h3>Коментарі</h3>
-
             {% for comment in comments %}
                 {{ macros.renderComment(comment) }}
             {% endfor %}

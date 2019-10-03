@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Attachment;
 use App\Entity\Competition;
 use App\Form\CompetitionType;
+use App\Form\SearchType;
 use App\Repository\CompetitionRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
@@ -33,11 +34,26 @@ class CompetitionController extends AbstractController
 
     /**
      * @Route("/", name="admin_competitions_list")
+     * @Route("/page{page}/", name="admin_competitions_list_paging", requirements={"page": "\d+"})
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
-        /** @var Competition[] $competitions */
-        $competitions = $this->competitionRepository->search([]);
+        $searchForm = $this->createForm(SearchType::class);
+
+        $searchForm->handleRequest($request);
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $data = $searchForm->getData();
+            $data['page'] = (int) $request->get('page');
+        } else {
+            $data = ['page' => (int) $request->get('page')];
+        }
+
+        if ($data['page'] === 0) {
+            $data['page'] = 1;
+        }
+
+        $competitions = $this->competitionRepository->search($data);
 
         return $this->render('admin/competition/list.html.twig', [
             'competitions' => $competitions

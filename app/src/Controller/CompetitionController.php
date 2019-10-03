@@ -33,6 +33,7 @@ class CompetitionController extends AbstractController
 
     /**
      * @Route("/", name="competitions_list")
+     * @Route("/page{page}/", name="competitions_list_paging", requirements={"page": "\d+"})
      * @return Response
      */
     public function listAction(Request $request)
@@ -43,10 +44,16 @@ class CompetitionController extends AbstractController
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $data = $searchForm->getData();
-            $competitions = $this->competitionRepository->search($data);
+            $data['page'] = (int) $request->get('page');
         } else {
-            $competitions = $this->competitionRepository->search([]);
+            $data = ['page' => (int) $request->get('page')];
         }
+
+        if ($data['page'] === 0) {
+            $data['page'] = 1;
+        }
+
+        $competitions = $this->competitionRepository->search($data);
 
         return $this->render('competition/list.html.twig', [
             'competitions' => $competitions,

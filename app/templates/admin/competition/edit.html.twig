@@ -3,13 +3,15 @@
 {% form_theme form _self %}
 
 {% block _competition_attachments_entry_widget %}
-    <div class="cell grid-x grid-padding-x grid-margin-y">
+    <div class="form-group form-inline">
         {% if form.vars.value %}
-            <div class="cell remove_attachment" style="width: 1%; cursor: pointer"><i class="fas fa-times"></i></div>
-            <div class="cell small-11">{{ form.vars.value.path }}</div>
-            {{ form_widget(form, {'attr' : {'class' : 'show-for-sr'}}) }}
+            <div class="col-md-11 attachment_name">{{ form.vars.value.path }}</div>
+            <button type="button" class="col-md-1 btn btn-danger remove_attachment">&times;</button>
+            <div style="display: none">
+                {{ form_widget(form, {'attr' : {'class' : ''}}) }}
+            </div>
         {% else %}
-            <div class="cell">
+            <div class="">
                 {{ form_widget(form) }}
             </div>
         {% endif %}
@@ -37,11 +39,11 @@
         </div>
         <div class="form-group">
             {{ form_label(form.attachments) }}
-            {{ form_widget(form.attachments, {'attr': {'class':'form-control'}}) }}
+            {{ form_widget(form.attachments, {'attr': {'class':'form-control-file'}}) }}
         </div>
         <div class="form-group">
             {{ form_label(form.description) }}
-            {{ form_widget(form.description, {'attr': {'class':'form-control'}}) }}
+            {{ form_widget(form.description, {'attr': {'class':'form-control tinymce-textarea'}}) }}
         </div>
         {{ form_end(form) }}
     </div>
@@ -53,51 +55,49 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        jQuery(document).ready(function() {
-            let $collectionHolder;
-            let $addTagButton = $('<button type="button" class="button add_attachment small">Додати</button>');
-            let $newLinkLi = $('<div></div>').append($addTagButton);
+        let $addTagButton = document.createElement('button');
+        $addTagButton.setAttribute('type', 'button');
+        $addTagButton.classList.add('btn');
+        $addTagButton.classList.add('btn-info');
+        $addTagButton.innerHTML = 'Додати';
 
-            // Get the ul that holds the collection of tags
-            $collectionHolder = $('#competition_attachments');
+        let $newLinkLi = document.createElement('div').appendChild($addTagButton);
 
-            // add the "add a tag" anchor and li to the tags ul
-            $collectionHolder.append($newLinkLi);
+        // Get the ul that holds the collection of tags
+        let $collectionHolder = document.querySelector('#competition_attachments');
 
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.appendChild($newLinkLi);
 
-            $addTagButton.on('click', function(e) {
-                // add a new tag form (see next code block)
-                addTagForm($collectionHolder, $newLinkLi);
-            });
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.setAttribute('data-index', $collectionHolder.querySelectorAll('.attachment_name').length);
 
-            function addTagForm($collectionHolder, $newLinkLi) {
-                // Get the data-prototype explained earlier
-                let prototype = $collectionHolder.data('prototype');
-
-                // get the new index
-                let index = $collectionHolder.data('index');
-
-                let newForm = prototype;
-                // You need this only if you didn't set 'label' => false in your tags field in TaskType
-                // Replace '__name__label__' in the prototype's HTML to
-                // instead be a number based on how many items we have
-                // newForm = newForm.replace(/__name__label__/g, index);
-
-                // Replace '__name__' in the prototype's HTML to
-                // instead be a number based on how many items we have
-                newForm = newForm.replace(/__name__/g, index);
-
-                // increase the index with one for the next item
-                $collectionHolder.data('index', index + 1);
-                $newLinkLi.before(newForm);
-            }
-
-            $('.remove_attachment').click(function () {
-                $(this).parent().remove();
-            })
+        $addTagButton.addEventListener('click', function(e) {
+            // add a new tag form (see next code block)
+            addTagForm($collectionHolder, $newLinkLi);
         });
+
+        function addTagForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            let prototype = $collectionHolder.getAttribute('data-prototype');
+            let index = parseInt($collectionHolder.getAttribute('data-index'));
+            prototype = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.setAttribute('data-index', index + 1);
+            $newLinkLi.insertAdjacentHTML('beforebegin', prototype);
+        }
+
+        const clearButtons = document.querySelectorAll('.remove_attachment');
+
+        if (clearButtons) {
+            clearButtons.forEach(function (item, i) {
+                item.addEventListener('click', function () {
+                    // console.log(this.parentNode.parentNode)
+                    this.parentNode.parentNode.removeChild(this.parentNode);
+                });
+            });
+        }
     </script>
 {% endblock %}

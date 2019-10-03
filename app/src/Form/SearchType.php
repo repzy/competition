@@ -41,6 +41,7 @@ class SearchType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Дата'
                 ],
+                'format' => 'dd.MM.yyyy',
                 'label' => false,
                 'html5' => false,
                 'required' => false,

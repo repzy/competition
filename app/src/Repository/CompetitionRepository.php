@@ -6,6 +6,7 @@ use App\Entity\Competition;
 use App\Entity\CompetitionClass;
 use App\Entity\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -31,16 +32,28 @@ class CompetitionRepository extends ServiceEntityRepository
             $queryBuilder->setParameter('name', '%' . $params['name'] . '%');
         }
 
+        if (!empty($params['date'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('c.date', ':date'));
+            $queryBuilder->setParameter('date', $params['date']);
+        }
+
         if (!empty($params['region']) && $params['region'] instanceof Region) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('region', ':region'));
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('c.region', ':region'));
             $queryBuilder->setParameter('region', $params['region']);
         }
 
         $queryBuilder->innerJoin('c.classes', 'classes');
         if (!empty($params['class']) && $params['class'] instanceof CompetitionClass) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('classes', ':class'));
+            $queryBuilder->andWhere($queryBuilder->expr()->in('classes', ':class'));
             $queryBuilder->setParameter('class', $params['class']->getKey());
         }
+
+        if (!empty($params['page']) && $params['page'] > 1) {
+            $queryBuilder->setFirstResult(intval(($params['page'] - 1) * Competition::PER_PAGE));
+        }
+
+        $queryBuilder->setMaxResults(Competition::PER_PAGE);
+        $queryBuilder->orderBy('c.date', 'desc');
 
         $query = $queryBuilder->getQuery();
 

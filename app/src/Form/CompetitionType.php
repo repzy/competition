@@ -53,7 +53,9 @@ class CompetitionType extends AbstractType
                 'required' => false,
                 'by_reference' => false
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'label' => 'Додаткова інформація',
+            ])
             ->add('Зберегти', SubmitType::class)
         ;
     }
