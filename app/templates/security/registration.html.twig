@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Реєстрація{% endblock %}
+
+{% block article %}
+    <div class="container-fluid">
+        <div class="row no-gutter">
+            <div class="col-md-6 col-lg-6">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Реєстрація</h5>
+                    {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(form.password['first'], {'attr': {'class': 'form-control', 'placeholder': 'Пароль'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_widget(form.password['second'], {'attr': {'class': 'form-control', 'placeholder': 'Повторіть пароль'}}) }}
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Зареєструватися</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
