@@ -89,7 +89,7 @@ class CustomAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->router->generate('admin_competitions_list'));
+        return new RedirectResponse($this->router->generate('profile_competitions_list'));
     }
 
     protected function getLoginUrl()

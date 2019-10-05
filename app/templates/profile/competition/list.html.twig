@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block article %}
+    {% if app.request.requestUri == path('profile_competitions_list')  %}
+        <div class="mb-5">
+            <a href="{{ path('profile_competitions_new') }}">
+                <button type="button" class="btn btn-outline-dark btn-lg btn-block">Створити</button>
+            </a>
+        </div>
+    {% endif %}
+    {% if competitions|length %}
+        {% for competition in competitions %}
+            <div class="mb-5">
+                <a class="h2 mb-1 text-dark" href="{{ path('profile_competitions_edit', {'id' : competition.id}) }}">
+                    <span class="" style="">{{ competition.name }}</span>
+                </a>
+                <div class="text-muted">
+                    <span class="d-inline-block">{{ competition.date|date('d.m.Y') }} &bull;</span>
+                    <span class="d-inline-block">{{ competition.region.name }} &bull;</span>
+                    <span class="d-inline-block">Клас: {{ competition.formattedClasses }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="text-center text-muted mb-5 mt-5">Пусто</div>
+    {% endif %}
+
+    <div class="mb-5">
+        <ul class="pagination justify-content-center">
+            {% set page = app.request.get('page')|default(1) %}
+            {% if page <= 1 %}
+                {% set laterClass = 'disabled' %}
+            {% endif %}
+            {% if competitions|length < constant('App\\Entity\\Competition::PER_PAGE') %}
+                {% set earlyClass = 'disabled' %}
+            {% endif %}
+
+            <li class="page-item {{ laterClass|default('') }}">
+                <a class="page-link" href="{{ path('profile_competitions_list_paging', {'page': page - 1}) }}" aria-disabled="true">Пізніше</a>
+            </li>
+
+            <li class="page-item {{ earlyClass|default('') }}">
+                <a class="page-link" href="{{ path('profile_competitions_list_paging', {'page': page + 1}) }}" aria-disabled="true">Раніше</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

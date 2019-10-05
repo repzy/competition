@@ -39,10 +39,16 @@ class Competition
     private $classes;
 
     /**
-     * @ORM\OneToOne(targetEntity="Region")
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id", unique=false)
+     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
      */
     private $region;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    private $author;
 
     /**
      * @ORM\ManyToMany(targetEntity="Attachment")
@@ -176,6 +182,18 @@ class Competition
     public function setRegion(?Region $region): self
     {
         $this->region = $region;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
