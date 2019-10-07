@@ -22,29 +22,12 @@ class SearchType extends AbstractType
                 'required' => false,
                 'placeholder' => 'Область'
             ])
-            ->add('class', EntityType::class, [
-                'class' => CompetitionClass::class,
-                'choice_label' => 'name',
-                'label' => false,
-                'required' => false,
-                'placeholder' => 'Клас',
-            ])
             ->add('name', TextType::class, [
                 'label' => false,
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Назва'
                 ]
-            ])
-            ->add('date', DateType::class, [
-                'widget' => 'single_text',
-                'attr' => [
-                    'placeholder' => 'Дата'
-                ],
-                'format' => 'dd.MM.yyyy',
-                'label' => false,
-                'html5' => false,
-                'required' => false,
             ])
         ;
     }

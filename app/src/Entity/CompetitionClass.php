@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,21 +15,21 @@ class CompetitionClass
      * @ORM\Id()
      * @ORM\Column(type="integer")
      */
-    private $key;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
-    public function getKey(): ?int
+    public function getId(): ?int
     {
-        return $this->key;
+        return $this->id;
     }
 
-    public function setKey(int $key): self
+    public function setId(int $id): self
     {
-        $this->key = $key;
+        $this->id = $id;
 
         return $this;
     }

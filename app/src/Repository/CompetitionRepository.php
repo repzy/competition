@@ -32,20 +32,9 @@ class CompetitionRepository extends ServiceEntityRepository
             $queryBuilder->setParameter('name', '%' . $params['name'] . '%');
         }
 
-        if (!empty($params['date'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq('c.date', ':date'));
-            $queryBuilder->setParameter('date', $params['date']);
-        }
-
         if (!empty($params['region']) && $params['region'] instanceof Region) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('c.region', ':region'));
             $queryBuilder->setParameter('region', $params['region']);
-        }
-
-        $queryBuilder->innerJoin('c.classes', 'classes');
-        if (!empty($params['class']) && $params['class'] instanceof CompetitionClass) {
-            $queryBuilder->andWhere($queryBuilder->expr()->in('classes', ':class'));
-            $queryBuilder->setParameter('class', $params['class']->getKey());
         }
 
         if (!empty($params['page']) && $params['page'] > 1) {

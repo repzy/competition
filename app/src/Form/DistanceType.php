@@ -2,9 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Competition;
 use App\Entity\CompetitionClass;
-use App\Entity\Region;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -13,9 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CompetitionType extends AbstractType
+class DistanceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -30,9 +27,9 @@ class CompetitionType extends AbstractType
                 'html5' => false,
                 'required' => true,
             ])
-            ->add('region', EntityType::class, [
-                'label' => 'Область',
-                'class' => Region::class,
+            ->add('class', EntityType::class, [
+                'label' => 'Клас',
+                'class' => CompetitionClass::class,
                 'choice_label' => 'name',
             ])
             ->add('attachments', CollectionType::class, [
@@ -52,12 +49,5 @@ class CompetitionType extends AbstractType
             ])
             ->add('Зберегти', SubmitType::class)
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Competition::class
-        ]);
     }
 }

@@ -16,8 +16,15 @@
                 </a>
                 <div class="text-muted">
                     <span class="d-inline-block">{{ competition.date|date('d.m.Y') }} &bull;</span>
-                    <span class="d-inline-block">{{ competition.region.name }} &bull;</span>
-                    <span class="d-inline-block">Клас: {{ competition.formattedClasses }}</span>
+                    <span class="d-inline-block">{{ competition.region.name }}</span>
+                </div>
+                <div class="mt-3">
+                    <ul>
+                        {% for distance in competition.distances %}
+                             <li class="h5"><a href="{{ path('profile_distances_edit', {'competitionId': competition.id, 'id': distance.id}) }}" class="text-dark">{{ distance.name }}</a></li>
+                        {% endfor %}
+                        <a href="{{ path('profile_distances_new', {'competitionId': competition.id}) }}"><li class="h5">Додати дистанцію</li></a>
+                    </ul>
                 </div>
             </div>
         {% endfor %}

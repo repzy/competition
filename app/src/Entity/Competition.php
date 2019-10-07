@@ -31,12 +31,9 @@ class Competition
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="CompetitionClass")
-     * @ORM\JoinTable(name="competition_classes",
-     *     joinColumns={@ORM\JoinColumn(name="competition_id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="class", referencedColumnName="key")})
+     * @ORM\OneToMany(targetEntity="App\Entity\Distance", mappedBy="competition", orphanRemoval=true)
      */
-    private $classes;
+    private $distances;
 
     /**
      * @ORM\ManyToOne(targetEntity="Region")
@@ -59,20 +56,14 @@ class Competition
     private $attachments;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $date;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
     public function __construct()
     {
-        $this->classes = new ArrayCollection();
         $this->attachments = new ArrayCollection();
-        $this->updatedAt = new \DateTime();
+        $this->distances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,64 +103,6 @@ class Competition
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CompetitionClass[]
-     */
-    public function getClasses(): Collection
-    {
-        return $this->classes;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFormattedClasses(): string
-    {
-        /** @var CompetitionClass[] $classes */
-        $classes = $this->classes;
-
-        if (0 === \count($classes)) {
-            return '--';
-        }
-
-        $names = [];
-        foreach ($classes as $class) {
-            $names[] = $class->getName();
-        }
-
-        return \implode(', ', $names);
-    }
-
-    public function addClass(CompetitionClass $class): self
-    {
-        if (!$this->classes->contains($class)) {
-            $this->classes[] = $class;
-        }
-
-        return $this;
-    }
-
-    public function removeClass(CompetitionClass $class): self
-    {
-        if ($this->classes->contains($class)) {
-            $this->classes->removeElement($class);
-        }
 
         return $this;
     }
@@ -219,6 +152,37 @@ class Competition
     {
         if ($this->attachments->contains($attachment)) {
             $this->attachments->removeElement($attachment);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Distance[]
+     */
+    public function getDistances(): Collection
+    {
+        return $this->distances;
+    }
+
+    public function addDistance(Distance $distance): self
+    {
+        if (!$this->distances->contains($distance)) {
+            $this->distances[] = $distance;
+            $distance->setCompetition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDistance(Distance $distance): self
+    {
+        if ($this->distances->contains($distance)) {
+            $this->distances->removeElement($distance);
+            // set the owning side to null (unless already changed)
+            if ($distance->getCompetition() === $this) {
+                $distance->setCompetition(null);
+            }
         }
 
         return $this;

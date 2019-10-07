@@ -43,15 +43,16 @@ class Comment
     private $user;
 
     /**
-     * @var Competition
-     */
-    private $competition;
-
-    /**
      * @var \DateTime
      * @ORM\Column(type="date")
      */
     private $date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Distance", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $distance;
 
     /**
      * Comment constructor.
@@ -143,6 +144,18 @@ class Comment
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDistance(): ?Distance
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?Distance $distance): self
+    {
+        $this->distance = $distance;
 
         return $this;
     }
