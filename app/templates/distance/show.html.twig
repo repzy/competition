@@ -23,7 +23,11 @@
 {% block article %}
     <div class="">
         <div class="mb-5">
-            <span class="h2 mb-1 text-dark" style="">{{ distance.name }}</span>
+            <span class="h2 mb-1 text-dark" style="">
+                <a href="{{ path('competitions_show', {'id': distance.competition.id}) }}" class="text-dark">
+                    {{ distance.competition.name }}
+                </a>&nbsp;<i class="fas fa-angle-right"></i>&nbsp;{{ distance.name }}
+            </span>
             <div class="text-muted">
                 <span class="d-inline-block">{{ distance.date|date('d.m.Y') }}</span>
             </div>
@@ -41,7 +45,7 @@
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <a href="{{ attachment.path }}" class="btn btn-primary">
-                                    Завантажити
+                                    <i class="fas fa-download"></i>
                                 </a>
                             </div>
                             <div class="col-auto">{{ attachment.path }}</div>

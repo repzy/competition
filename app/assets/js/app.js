@@ -36,3 +36,7 @@ tinymce.init({
     ],
     toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect'
 });
+
+// FontAwesome
+require('@fortawesome/fontawesome-free/js/all.js');
+require('@fortawesome/fontawesome-free/sprites/solid.svg');
