@@ -61,13 +61,20 @@
 
         <div class="">
             <h3>Коментарі</h3>
-            {% if distance.comments|length %}
-                {% for comment in distance.comments %}
-                    {{ macros.renderComment(comment) }}
-                {% endfor %}
-            {% else %}
-                <div class="text-center text-muted">Пусто</div>
-            {% endif %}
+{#            {% if not distance.comments|length %}#}
+                <div id="comment-section">
+                </div>
+{#                {% for comment in distance.comments %}#}
+{#                    {{ macros.renderComment(comment) }}#}
+{#                {% endfor %}#}
+{#            {% else %}#}
+{#                <div class="text-center text-muted">Пусто</div>#}
+{#            {% endif %}#}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('vue-comment') }}
 {% endblock %}

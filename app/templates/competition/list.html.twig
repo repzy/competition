@@ -11,19 +11,19 @@
     <div class="">
         {{ form_start(search, {'attr': {'class': ''}}) }}
         <div class="row mb-3">
-            <div class="col-md-3">
-                <div class="form-group">
-                    {{ form_row(search.region, {'attr': {'class': 'form-control'}}) }}
-                </div>
-            </div>
             <div class="col-md-7">
                 <div class="form-group">
                     {{ form_row(search.name, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    {{ form_row(search.region, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" style="font-size: 0.8rem">Пошук<i class="fas fa-search"></i></button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" style="font-size: 0.8rem">Пошук</button>
                 </div>
             </div>
         </div>
