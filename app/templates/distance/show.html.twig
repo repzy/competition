@@ -61,15 +61,12 @@
 
         <div class="">
             <h3>Коментарі</h3>
-{#            {% if not distance.comments|length %}#}
-                <div id="comment-section">
+                <div
+                        id="comment-section"
+                        data-comment-list-url="{{ path("comments_list", {'distanceId': app.request.get('id')}) }}"
+                        data-comment-save-url="{{ path("comments_save", {'distanceId': app.request.get('id')}) }}"
+                        data-user-email="{{ app.user.email|default('') }}">
                 </div>
-{#                {% for comment in distance.comments %}#}
-{#                    {{ macros.renderComment(comment) }}#}
-{#                {% endfor %}#}
-{#            {% else %}#}
-{#                <div class="text-center text-muted">Пусто</div>#}
-{#            {% endif %}#}
         </div>
     </div>
 {% endblock %}

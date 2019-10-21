@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Distance;
 use App\Repository\CommentRepository;
 use App\Repository\DistanceRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,10 +56,6 @@ class CommentController extends AbstractController
                 'parent_id' => $parent
             ];
         }
-//        $this->recursiveWalk($comments);
-//        dump();
-//
-//        exit;
 
         return new JsonResponse($this->buildTree($result));
     }
@@ -77,5 +75,48 @@ class CommentController extends AbstractController
             }
         }
         return $branch;
+    }
+
+    /**
+     * @Route("/distance/{distanceId}/comments/save", name="comments_save")
+     * @IsGranted("ROLE_USER")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function saveAction(Request $request, int $distanceId): Response
+    {
+        $distance = $this->distanceRepository->find($distanceId);
+
+        if (!$distance instanceof Distance) {
+            throw new \InvalidArgumentException();
+        }
+
+        $content = json_decode($request->getContent(), true);
+
+        $comment = new Comment();
+        $comment->setDistance($distance);
+        $comment->setUser($this->getUser());
+        $comment->setText($content['text']);
+
+        $parent_id = $content['parent_id'];
+        if (null !== $parent_id) {
+            $parentComment = $this->commentRepository->find($parent_id);
+            if ($parentComment instanceof Comment) {
+                $comment->setParent($parentComment);
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($comment);
+        $em->flush();
+
+        return new JsonResponse([
+            'id' => $comment->getId(),
+            'user' => $comment->getUser()->getEmail(),
+            'text' => $comment->getText(),
+            'parent_id' => $comment->getParent()->getId(),
+            'children' => []
+        ]);
     }
 }

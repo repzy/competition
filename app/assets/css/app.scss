@@ -1,5 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~pikaday/css/pikaday.css";
-@import "~tinymce/skins/ui/oxide/skin.min.css";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import '~@fortawesome/fontawesome-free/scss/solid';
+
+.ck-editor__editable {
+  min-height: 200px;
+}

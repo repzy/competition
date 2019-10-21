@@ -4,8 +4,9 @@
             v-for="comment in comments"
             v-bind:comment="comment"
             v-bind:key="comment.id"
+            v-bind:userEmail="userEmail"
         ></CommentItem>
-        <CommentForm></CommentForm>
+        <CommentForm v-if="isUser"></CommentForm>
     </div>
 </template>
 
@@ -15,14 +16,20 @@
     import EventBus from "./EventBus";
 
     export default {
-        props: ['comments'],
+        props: ['comments', 'userEmail'],
         components: {
             CommentItem,
             CommentForm
         },
 
+        computed: {
+            isUser: function () {
+                return this.userEmail !== '';
+            }
+        },
+
         created: function() {
-            EventBus.$on('createComment', (comment) => {
+            EventBus.$on('commentSaved', (comment) => {
                 if (comment.parent_id === undefined || comment.parent_id === null) {
                     this.comments.push(comment);
                 }
