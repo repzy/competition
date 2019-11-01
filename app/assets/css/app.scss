@@ -6,3 +6,20 @@
 .ck-editor__editable {
   min-height: 200px;
 }
+
+blockquote {
+  background: #f9f9f9;
+  border-left: 2px solid #aac7d6;
+  margin: 12px 0;
+  padding: 0 12px;
+}
+blockquote:before {
+  color: #ccc;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}

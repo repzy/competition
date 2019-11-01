@@ -23,19 +23,15 @@ let picker = new Pikaday({
     }
 });
 
-// TinyMCE
-import tinymce from 'tinymce/tinymce';
-import 'tinymce/themes/silver';
-import 'tinymce/plugins/table';
-tinymce.init({
-    selector: '.tinymce-textarea',
-    skin: false,
-    height: 500,
-    plugins: [
-        'table'
-    ],
-    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect'
-});
+//CKeditor
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+ClassicEditor
+    .create( document.querySelector( '.ckeditor-textarea' ), {
+        toolbar: ['undo', 'redo', '|', 'heading', '|', 'bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList', '|', 'blockQuote', 'insertTable' ],
+    })
+    .catch( error => {
+        console.error( error );
+    });
 
 // FontAwesome
 require('@fortawesome/fontawesome-free/js/all.js');

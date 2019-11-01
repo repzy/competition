@@ -4,7 +4,7 @@ import EventBus from "./EventBus";
 
 new Vue({
     el: '#comment-section',
-    template: '<CommentList v-bind:comments="commentNodes" v-bind:userEmail="userEmail"></CommentList>',
+    template: '<CommentList v-bind:comments="commentNodes" v-bind:userEmail="userEmail" v-bind:isLoaded="isLoaded"></CommentList>',
     components: {
         CommentList
     },
@@ -13,7 +13,8 @@ new Vue({
             commentNodes: [],
             commentListUrl: '',
             commentSaveUrl: '',
-            userEmail: ''
+            userEmail: '',
+            isLoaded: false,
         }
     },
 
@@ -21,7 +22,8 @@ new Vue({
         fetchFromServer: function() {
             fetch(this.commentListUrl)
                 .then(response => response.json())
-                .then(data => this.commentNodes = data);
+                .then(data => this.commentNodes = data)
+                .then(() => this.isLoaded = true);
         },
         saveToServer: function(comment) {
             fetch(this.commentSaveUrl, {

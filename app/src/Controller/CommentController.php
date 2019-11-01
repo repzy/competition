@@ -99,7 +99,7 @@ class CommentController extends AbstractController
         $comment->setUser($this->getUser());
         $comment->setText($content['text']);
 
-        $parent_id = $content['parent_id'];
+        $parent_id = $content['parent_id'] ?? null;
         if (null !== $parent_id) {
             $parentComment = $this->commentRepository->find($parent_id);
             if ($parentComment instanceof Comment) {
@@ -115,7 +115,7 @@ class CommentController extends AbstractController
             'id' => $comment->getId(),
             'user' => $comment->getUser()->getEmail(),
             'text' => $comment->getText(),
-            'parent_id' => $comment->getParent()->getId(),
+            'parent_id' => $comment->getParent() ? $comment->getParent()->getId() : null,
             'children' => []
         ]);
     }

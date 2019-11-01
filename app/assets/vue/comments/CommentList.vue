@@ -1,5 +1,10 @@
 <template>
-    <div class="mb-2">
+    <div v-if="!isLoaded">
+        <div class="text-center">
+            <i class="fas fa-spinner fa-pulse fa-3x"></i>
+        </div>
+    </div>
+    <div v-else class="mb-2">
         <CommentItem
             v-for="comment in comments"
             v-bind:comment="comment"
@@ -16,7 +21,7 @@
     import EventBus from "./EventBus";
 
     export default {
-        props: ['comments', 'userEmail'],
+        props: ['comments', 'userEmail', 'isLoaded'],
         components: {
             CommentItem,
             CommentForm
