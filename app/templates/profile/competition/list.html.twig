@@ -2,10 +2,8 @@
 
 {% block article %}
     {% if app.request.requestUri == path('profile_competitions_list')  %}
-        <div class="mb-5">
-            <a href="{{ path('profile_competitions_new') }}">
-                <button type="button" class="btn btn-outline-dark btn-lg btn-block">Створити</button>
-            </a>
+        <div class="mb-4 text-right">
+            <a href="{{ path('profile_competitions_new') }}">Створити</a>
         </div>
     {% endif %}
     {% if competitions|length %}

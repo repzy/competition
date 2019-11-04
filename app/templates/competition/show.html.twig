@@ -2,6 +2,12 @@
 
 {% block article %}
     <div>
+        {% if app.user and competition.author is same as(app.user) %}
+            <div class="mb-4 text-right">
+                <a href="{{ path('profile_competitions_edit', {'id': competition.id}) }}">Редагувати</a>
+            </div>
+        {% endif %}
+
         <div class="mb-3">
             <span class="h2 mb-1 text-dark" style="">{{ competition.name }}</span>
             <div class="text-muted">
