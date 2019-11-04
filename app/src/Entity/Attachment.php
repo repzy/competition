@@ -20,7 +20,12 @@ class Attachment
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $path;
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $extension;
 
     /**
      * @var UploadedFile|null
@@ -32,16 +37,41 @@ class Attachment
         return $this->id;
     }
 
-    public function getPath(): ?string
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
-        return $this->path;
+        return $this->name;
     }
 
-    public function setPath(string $path): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
-        $this->path = $path;
+        $this->name = $name;
+    }
 
-        return $this;
+    /**
+     * @return mixed
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * @param mixed $extension
+     */
+    public function setExtension($extension): void
+    {
+        $this->extension = $extension;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->getId() . '.' . $this->getExtension();
     }
 
     /**

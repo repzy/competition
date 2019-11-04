@@ -1,29 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% macro renderComment(comment) %}
-    {% import _self as macros %}
-    <div class="media-body mb-3">
-        <span class="">email@gmail.com</span>
-        <div class="mb-3">
-            {{ comment.text }}
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-        </div>
-        <div class="ml-5">
-            {% if comment.children|length %}
-                {% for child in comment.children %}
-                    {{ macros.renderComment(child) }}
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-{% endmacro %}
-
-{% import _self as macros %}
-
 {% block article %}
-    <div class="">
+    <div>
         <div class="mb-5">
-            <span class="h2 mb-1 text-dark" style="">
+            <span class="h2 mb-1 text-dark">
                 <a href="{{ path('competitions_show', {'id': distance.competition.id}) }}" class="text-dark">
                     {{ distance.competition.name }}
                 </a>&nbsp;<i class="fas fa-angle-right"></i>&nbsp;{{ distance.name }}
@@ -37,18 +17,18 @@
             {{ distance.description|raw}}
         </div>
 
-        <div class="mb-5" style="">
+        <div class="mb-5">
             <h3>Файли</h3>
             {% if distance.attachments|length %}
                 {% for attachment in distance.attachments %}
                     <div class="mb-1">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <a href="{{ attachment.path }}" class="btn btn-primary">
+                                <a href="{{ path('attachment_download', {'id': attachment.id}) }}" class="btn btn-primary">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </div>
-                            <div class="col-auto">{{ attachment.path }}</div>
+                            <div class="col-auto">{{ attachment.name ~ '.' ~ attachment.extension }}</div>
                         </div>
                     </div>
                 {% endfor %}
@@ -59,13 +39,13 @@
             {% endif %}
         </div>
 
-        <div class="">
+        <div>
             <h3>Коментарі</h3>
                 <div
-                        id="comment-section"
-                        data-comment-list-url="{{ path("comments_list", {'distanceId': app.request.get('id')}) }}"
-                        data-comment-save-url="{{ path("comments_save", {'distanceId': app.request.get('id')}) }}"
-                        data-user-email="{{ app.user.email|default('') }}">
+                    id="comment-section"
+                    data-comment-list-url="{{ path("comments_list", {'distanceId': app.request.get('id')}) }}"
+                    data-comment-save-url="{{ path("comments_save", {'distanceId': app.request.get('id')}) }}"
+                    data-user-email="{{ app.user.email|default('') }}">
                 </div>
         </div>
     </div>

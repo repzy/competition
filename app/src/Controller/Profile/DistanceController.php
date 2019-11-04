@@ -2,12 +2,12 @@
 
 namespace App\Controller\Profile;
 
-use App\Entity\Attachment;
 use App\Entity\Competition;
 use App\Entity\Distance;
 use App\Form\DistanceType;
 use App\Repository\CompetitionRepository;
 use App\Repository\DistanceRepository;
+use App\Service\AttachmentService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -38,12 +38,25 @@ class DistanceController extends AbstractController
      */
     private $distanceRepository;
 
+    /**
+     * @var AttachmentService
+     */
+    private $attachmentService;
+
+    /**
+     * DistanceController constructor.
+     * @param CompetitionRepository $competitionRepository
+     * @param DistanceRepository $distanceRepository
+     * @param AttachmentService $attachmentService
+     */
     public function __construct(
         CompetitionRepository $competitionRepository,
-        DistanceRepository $distanceRepository
+        DistanceRepository $distanceRepository,
+        AttachmentService $attachmentService
     ) {
         $this->competitionRepository = $competitionRepository;
         $this->distanceRepository = $distanceRepository;
+        $this->attachmentService = $attachmentService;
     }
 
     /**
@@ -58,7 +71,7 @@ class DistanceController extends AbstractController
         /** @var Competition $competition */
         $competition = $this->competitionRepository->find($competitionId);
 
-        if (!$competition instanceof Competition /*|| $competition->getAuthor() !== $this->getUser()*/) {
+        if (!$competition instanceof Competition || $competition->getAuthor() !== $this->getUser()) {
             throw new NotFoundHttpException();
         }
 
@@ -101,6 +114,10 @@ class DistanceController extends AbstractController
         /** @var Competition $competition */
         $competition = $this->competitionRepository->find($competitionId);
 
+        if (!$competition instanceof Competition || $competition->getAuthor() !== $this->getUser()) {
+            throw new NotFoundHttpException();
+        }
+
         $distance = $this->distanceRepository->find($id);
 
         $form = $this->createForm(DistanceType::class, $distance);
@@ -110,12 +127,8 @@ class DistanceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $competition = $form->getData();
 
-            /** @var Attachment[] $newAttachments */
-            $newAttachments = $competition->getAttachments()->getInsertDiff();
-            foreach ($newAttachments as $newAttachment) {
-                $newAttachment->setPath($newAttachment->getFile()->getClientOriginalName());
-                $entityManager->persist($newAttachment);
-            }
+            $this->attachmentService->manageAddedAttachments($competition);
+            $this->attachmentService->manageRemovedAttachments($competition);
 
             $entityManager->persist($competition);
             $entityManager->flush();

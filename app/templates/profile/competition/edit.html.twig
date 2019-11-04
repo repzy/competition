@@ -5,10 +5,10 @@
 {% block _competition_attachments_entry_widget %}
     <div class="form-group form-inline">
         {% if form.vars.value %}
-            <div class="col-md-11 attachment_name">{{ form.vars.value.path }}</div>
+            <div class="col-md-11 attachment_name">{{ form.vars.value.name }}</div>
             <button type="button" class="col-md-1 btn btn-danger remove_attachment">&times;</button>
             <div style="display: none">
-                {{ form_widget(form, {'attr' : {'class' : ''}}) }}
+                {{ form_widget(form) }}
             </div>
         {% else %}
             <div class="">

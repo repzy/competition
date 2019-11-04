@@ -5,13 +5,13 @@
 {% block _distance_attachments_entry_widget %}
     <div class="form-group form-inline">
         {% if form.vars.value %}
-            <div class="col-md-11 attachment_name">{{ form.vars.value.path }}</div>
+            <div class="col-md-11 attachment_name">{{ form.vars.value.name }}</div>
             <button type="button" class="col-md-1 btn btn-danger remove_attachment">&times;</button>
             <div style="display: none">
-                {{ form_widget(form, {'attr' : {'class' : ''}}) }}
+                {{ form_widget(form) }}
             </div>
         {% else %}
-            <div class="">
+            <div>
                 {{ form_widget(form) }}
             </div>
         {% endif %}
@@ -44,8 +44,6 @@
         {{ form_end(form) }}
     </div>
 {% endblock %}
-
-
 
 {% block javascripts %}
     {{ parent() }}
@@ -90,7 +88,6 @@
         if (clearButtons) {
             clearButtons.forEach(function (item, i) {
                 item.addEventListener('click', function () {
-                    // console.log(this.parentNode.parentNode)
                     this.parentNode.parentNode.removeChild(this.parentNode);
                 });
             });
