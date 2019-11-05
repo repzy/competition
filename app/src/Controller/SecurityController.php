@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\CustomAuthenticator;
+use App\Specification\PasswordSpecification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +17,24 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @var PasswordSpecification
+     */
+    private $passwordSpecification;
+
+    public function __construct(
+        UserRepository $userRepository,
+        PasswordSpecification $passwordSpecification
+    ) {
+        $this->userRepository = $userRepository;
+        $this->passwordSpecification = $passwordSpecification;
+    }
+
     /**
      * @Route("/login", name="app_login")
      *
@@ -51,13 +71,29 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form->get('email')->getData();
+            $password = $form->get('password')->getData();
+
+            $user = $this->userRepository->findOneBy(['email' => $email]);
+
+            if ($user instanceof User) {
+                $this->addFlash('error', 'Користувач вже існує.');
+
+                return $this->render('security/registration.html.twig', [
+                    'form' => $form->createView()
+                ]);
+            }
+
+            if (!$this->passwordSpecification->isSatisfiedBy($password)) {
+                $this->addFlash('error', 'Пароль має бути не менше 8 символів.');
+
+                return $this->render('security/registration.html.twig', [
+                    'form' => $form->createView()
+                ]);
+            }
+
             // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
+            $user->setPassword($passwordEncoder->encodePassword($user, $password));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
