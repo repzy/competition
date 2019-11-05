@@ -9,6 +9,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Competition|null find($id, $lockMode = null, $lockVersion = null)
@@ -35,6 +36,11 @@ class CompetitionRepository extends ServiceEntityRepository
         if (!empty($params['region']) && $params['region'] instanceof Region) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq('c.region', ':region'));
             $queryBuilder->setParameter('region', $params['region']);
+        }
+
+        if (!empty($params['author'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('c.author', ':author'));
+            $queryBuilder->setParameter('author', $params['author']);
         }
 
         if (!empty($params['page']) && $params['page'] > 1) {

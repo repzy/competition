@@ -70,6 +70,8 @@ class CompetitionController extends AbstractController
             $data['page'] = 1;
         }
 
+        $data['author'] = $this->getUser();
+
         $competitions = $this->competitionRepository->search($data);
 
         return $this->render('profile/competition/list.html.twig', [
