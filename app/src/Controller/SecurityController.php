@@ -74,9 +74,9 @@ class SecurityController extends AbstractController
             $email = $form->get('email')->getData();
             $password = $form->get('password')->getData();
 
-            $user = $this->userRepository->findOneBy(['email' => $email]);
+            $checkUser = $this->userRepository->findOneBy(['email' => $email]);
 
-            if ($user instanceof User) {
+            if ($checkUser instanceof User) {
                 $this->addFlash('error', 'Користувач вже існує.');
 
                 return $this->render('security/registration.html.twig', [
