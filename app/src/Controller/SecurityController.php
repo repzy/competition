@@ -107,6 +107,10 @@ class SecurityController extends AbstractController
             );
         }
 
+        if ($form['password']->getErrors(true)) {
+            $this->addFlash('error', 'Паролі не співпадають.');
+        }
+
         return $this->render('security/registration.html.twig', [
             'form' => $form->createView()
         ]);

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Competition;
 use App\Form\SearchType;
 use App\Repository\CompetitionRepository;
