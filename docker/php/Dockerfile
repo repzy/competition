@@ -30,4 +30,5 @@ RUN set -eux; \
 		opcache \
     ;
 
+COPY custom.ini $PHP_INI_DIR/conf.d/
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
