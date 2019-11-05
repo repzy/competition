@@ -107,7 +107,7 @@ class SecurityController extends AbstractController
             );
         }
 
-        if ($form['password']->getErrors(true)) {
+        if ($form['password']->getErrors(true)->count()) {
             $this->addFlash('error', 'Паролі не співпадають.');
         }
 
