@@ -11,7 +11,12 @@
             v-bind:key="comment.id"
             v-bind:userEmail="userEmail"
         ></CommentItem>
-        <CommentForm v-if="isUser"></CommentForm>
+        <div v-if="isUser">
+            <CommentForm></CommentForm>
+        </div>
+        <div v-else-if="!hasComments" class="text-center text-muted">
+            Пусто
+        </div>
     </div>
 </template>
 
@@ -30,6 +35,9 @@
         computed: {
             isUser: function () {
                 return this.userEmail !== '';
+            },
+            hasComments: function() {
+                return this.comments.length > 0;
             }
         },
 

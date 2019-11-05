@@ -30,7 +30,7 @@ ClassicEditor
         toolbar: ['undo', 'redo', '|', 'heading', '|', 'bold', 'italic', '|', 'link', '|', 'bulletedList', 'numberedList', '|', 'blockQuote', 'insertTable' ],
     })
     .catch( error => {
-        console.error( error );
+        console.log( error );
     });
 
 // FontAwesome

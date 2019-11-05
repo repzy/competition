@@ -9,7 +9,7 @@
         {% endif %}
 
         <div class="mb-3">
-            <span class="h2 mb-1 text-dark" style="">{{ competition.name }}</span>
+            <span class="h2 mb-1 text-dark">{{ competition.name }}</span>
             <div class="text-muted">
                 <span class="d-inline-block">{{ competition.date|date('d.m.Y') }} &bull;</span>
                 <span class="d-inline-block">{{ competition.region.name }}</span>
@@ -32,7 +32,7 @@
             <h3>Файли</h3>
             {% if competition.attachments|length %}
                 {% for attachment in competition.attachments %}
-                    <div class="alert alert-light pl-0">
+                    <div class="mb-1">
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <a href="{{ path('attachment_download', {'id': attachment.id}) }}" class="btn btn-primary">
@@ -44,7 +44,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <div class="alert alert-light text-center">
+                <div class="text-center text-muted">
                     Пусто
                 </div>
             {% endif %}

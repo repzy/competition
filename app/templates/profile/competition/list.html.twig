@@ -1,16 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block article %}
-    {% if app.request.requestUri == path('profile_competitions_list')  %}
+    <div class="mb-3">
+        {% include 'flashes.html.twig' %}
+    </div>
+
+    {% if app.request.requestUri == path('profile_competitions_list') %}
         <div class="mb-4 text-right">
             <a href="{{ path('profile_competitions_new') }}">Створити</a>
         </div>
     {% endif %}
-    {% if competitions|length %}
-        {% for competition in competitions %}
-            <div class="mb-5">
+
+    <div class="mb-5">
+        {% if competitions|length %}
+            {% for competition in competitions %}
                 <a class="h2 mb-1 text-dark" href="{{ path('profile_competitions_edit', {'id' : competition.id}) }}">
-                    <span class="" style="">{{ competition.name }}</span>
+                    <span>{{ competition.name }}</span>
                 </a>
                 <div class="text-muted">
                     <span class="d-inline-block">{{ competition.date|date('d.m.Y') }} &bull;</span>
@@ -24,11 +29,11 @@
                         <a href="{{ path('profile_distances_new', {'competitionId': competition.id}) }}"><li class="h5">Додати дистанцію</li></a>
                     </ul>
                 </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <div class="text-center text-muted mb-5 mt-5">Пусто</div>
-    {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="text-center text-muted mt-5">Пусто</div>
+        {% endif %}
+    </div>
 
     <div class="mb-5">
         <ul class="pagination justify-content-center">

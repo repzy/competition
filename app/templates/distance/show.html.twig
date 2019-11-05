@@ -2,6 +2,10 @@
 
 {% block article %}
     <div>
+        <div class="mb-3">
+            {% include 'flashes.html.twig' %}
+        </div>
+
         {% if app.user and distance.competition.author is same as(app.user) %}
             <div class="mb-4 text-right">
                 <a href="{{ path('profile_distances_edit', {'competitionId': distance.competition.id, 'id': distance.id}) }}">Редагувати</a>
@@ -39,7 +43,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <div class="text-center">
+                <div class="text-center text-muted">
                     Пусто
                 </div>
             {% endif %}
@@ -47,12 +51,12 @@
 
         <div>
             <h3>Коментарі</h3>
-                <div
-                    id="comment-section"
-                    data-comment-list-url="{{ path("comments_list", {'distanceId': app.request.get('id')}) }}"
-                    data-comment-save-url="{{ path("comments_save", {'distanceId': app.request.get('id')}) }}"
-                    data-user-email="{{ app.user.email|default('') }}">
-                </div>
+            <div
+                id="comment-section"
+                data-comment-list-url="{{ path("comments_list", {'distanceId': app.request.get('id')}) }}"
+                data-comment-save-url="{{ path("comments_save", {'distanceId': app.request.get('id')}) }}"
+                data-user-email="{{ app.user.email|default('') }}">
+            </div>
         </div>
     </div>
 {% endblock %}
