@@ -36,3 +36,6 @@ ClassicEditor
 // FontAwesome
 require('@fortawesome/fontawesome-free/js/all.js');
 require('@fortawesome/fontawesome-free/sprites/solid.svg');
+
+// Bootstrap
+require('bootstrap/js/dist/collapse.js');
