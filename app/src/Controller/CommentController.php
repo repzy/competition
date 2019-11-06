@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Distance;
+use App\Entity\User;
 use App\Repository\CommentRepository;
 use App\Repository\DistanceRepository;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,10 +27,25 @@ class CommentController extends AbstractController
      */
     private $commentRepository;
 
-    public function __construct(DistanceRepository $distanceRepository, CommentRepository $commentRepository)
-    {
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * CommentController constructor.
+     * @param DistanceRepository $distanceRepository
+     * @param CommentRepository $commentRepository
+     * @param UserRepository $userRepository
+     */
+    public function __construct(
+        DistanceRepository $distanceRepository,
+        CommentRepository $commentRepository,
+        UserRepository $userRepository
+    ) {
         $this->distanceRepository = $distanceRepository;
         $this->commentRepository = $commentRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -82,14 +99,18 @@ class CommentController extends AbstractController
      * @IsGranted("ROLE_USER")
      *
      * @param Request $request
+     * @param int $distanceId
      * @return Response
+     * @throws \Exception
      */
     public function saveAction(Request $request, int $distanceId): Response
     {
         $distance = $this->distanceRepository->find($distanceId);
 
         if (!$distance instanceof Distance) {
-            throw new \InvalidArgumentException();
+            return new JsonResponse([
+                'error' => 'Distance not found.'
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $content = json_decode($request->getContent(), true);
@@ -106,6 +127,56 @@ class CommentController extends AbstractController
                 $comment->setParent($parentComment);
             }
         }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($comment);
+        $em->flush();
+
+        return new JsonResponse([
+            'id' => $comment->getId(),
+            'user' => $comment->getUser()->getEmail(),
+            'text' => $comment->getText(),
+            'parent_id' => $comment->getParent() ? $comment->getParent()->getId() : null,
+            'children' => []
+        ]);
+    }
+
+    /**
+     * @Route("/distance/{distanceId}/comments/update", name="comments_update")
+     * @IsGranted("ROLE_USER")
+     *
+     * @param Request $request
+     * @param int $distanceId
+     * @return Response
+     */
+    public function updateAction(Request $request, int $distanceId): Response
+    {
+        $distance = $this->distanceRepository->find($distanceId);
+
+        if (!$distance instanceof Distance) {
+            return new JsonResponse([
+                'error' => 'Distance not found.'
+            ],  Response::HTTP_BAD_REQUEST);
+        }
+
+        $content = json_decode($request->getContent(), true);
+
+        $comment = $this->commentRepository->find($content['id']);
+        $commentAuthor = $this->userRepository->findOneBy(['email' => $content['user']]);
+
+        if (!$commentAuthor instanceof User || $commentAuthor !== $this->getUser()) {
+            return new JsonResponse([
+                'error' => 'Incorrect comment author.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$comment instanceof Comment) {
+            return new JsonResponse([
+                'error' => 'Comment not found.'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $comment->setText($content['text']);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($comment);

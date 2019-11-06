@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-3">
             <ul>
                 {% for distance in competition.distances %}
                     <li class="h5"><a href="{{ path('distances_show', {'id': distance.id}) }}">{{ distance.name }}</a></li>
@@ -39,7 +39,7 @@
                                     <i class="fas fa-download"></i>
                                 </a>
                             </div>
-                            <div class="col-auto" style="max-width: 75%">{{ attachment.name ~ '.' ~ attachment.extension }}</div>
+                            <div class="col-auto mw-75" style="max-width: 75%">{{ attachment.name ~ '.' ~ attachment.extension }}</div>
                         </div>
                     </div>
                 {% endfor %}

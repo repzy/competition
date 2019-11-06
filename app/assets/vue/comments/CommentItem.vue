@@ -7,9 +7,22 @@
                 </div>
                 <strong>{{comment.user}}</strong>
             </div>
-            <div class="mb-1" v-html="comment.text"></div>
+
+            <div v-if="isEditing">
+                <CommentForm
+                    v-bind:parent_id = "comment.id"
+                    v-bind:comment_id = "comment.id"
+                    v-bind:text = "comment.text"
+                    v-bind:user = "comment.user"
+                ></CommentForm>
+            </div>
+            <div v-else>
+                <div class="mb-1" v-html="comment.text"></div>
+            </div>
+
             <div v-if="isUser">
                 <span class="text-muted" style="cursor: pointer" v-on:click="toggleHidden">Відповісти</span>
+                <span class="text-muted" style="cursor: pointer" v-on:click="toggleEdit" v-if="isOwner">Редагувати</span>
                 <div v-bind:class="{ 'd-none': isHidden }">
                     <CommentForm v-bind:parent_id="comment.id"></CommentForm>
                 </div>
@@ -40,12 +53,16 @@
         data: function() {
             return {
                 isHidden: true,
+                isEditing: false,
             }
         },
 
         methods: {
             toggleHidden() {
                 this.isHidden = !this.isHidden;
+            },
+            toggleEdit() {
+                this.isEditing = !this.isEditing;
             }
         },
 
@@ -55,6 +72,9 @@
             },
             isUser: function () {
                 return this.userEmail !== '';
+            },
+            isOwner: function () {
+                return this.userEmail === this.comment.user;
             }
         },
 
@@ -64,6 +84,10 @@
                     this.comment.children.push(comment);
                 }
                 this.isHidden = true;
+            });
+            EventBus.$on('commentUpdated', (comment) => {
+                this.comment.text = comment.text;
+                this.isEditing = false;
             });
         },
     }

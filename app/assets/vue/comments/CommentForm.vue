@@ -2,7 +2,10 @@
     <div>
         <ckeditor :editor="editor" v-model="text" :config="editorConfig"></ckeditor>
 
-        <button v-on:click="createComment" class="btn">Add</button>
+        <button v-on:click="createComment" class="btn">
+            <span v-if="isEditing">Редагувати</span>
+            <span v-else>Додати</span>
+        </button>
     </div>
 </template>
 
@@ -16,7 +19,7 @@
             'ckeditor': CKEditor.component,
         },
 
-        props: ['parent_id', 'user'],
+        props: ['parent_id', 'user', 'comment_id', 'text'],
 
         data: function() {
             return {
@@ -28,14 +31,26 @@
             }
         },
 
+        computed: {
+            isEditing: function() {
+                return this.comment_id !== undefined || this.comment_id !== null;
+            }
+        },
+
         methods: {
             createComment: function() {
                 if(!this.text.trim()) return;
 
-                let comment = { user: this.user, text: this.text, children: [], parent_id: this.parent_id };
+                if (this.comment_id) {
+                    let comment = { id: this.comment_id, user: this.user, text: this.text, children: [], parent_id: this.parent_id };
 
-                EventBus.$emit('commentCreated', comment);
-                this.clearForm();
+                    EventBus.$emit('commentEdited', comment);
+                } else {
+                    let comment = { user: this.user, text: this.text, children: [], parent_id: this.parent_id };
+
+                    EventBus.$emit('commentCreated', comment);
+                    this.clearForm();
+                }
             },
 
             clearForm: function() {

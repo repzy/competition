@@ -55,6 +55,7 @@
                 id="comment-section"
                 data-comment-list-url="{{ path("comments_list", {'distanceId': app.request.get('id')}) }}"
                 data-comment-save-url="{{ path("comments_save", {'distanceId': app.request.get('id')}) }}"
+                data-comment-update-url="{{ path("comments_update", {'distanceId': app.request.get('id')}) }}"
                 data-user-email="{{ app.user.email|default('') }}">
             </div>
         </div>

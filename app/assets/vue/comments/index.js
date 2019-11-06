@@ -13,6 +13,7 @@ new Vue({
             commentNodes: [],
             commentListUrl: '',
             commentSaveUrl: '',
+            commentUpdateUrl: '',
             userEmail: '',
             isLoaded: false,
         }
@@ -36,6 +37,18 @@ new Vue({
                 .then(response => response.json())
                 .then(data => EventBus.$emit('commentSaved', data))
             ;
+        },
+        updateToServer: function(comment) {
+            fetch(this.commentUpdateUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(comment)
+            })
+                .then(response => response.json())
+                .then(data => EventBus.$emit('commentUpdated', data))
+            ;
         }
     },
 
@@ -43,10 +56,14 @@ new Vue({
         let dataset = document.querySelector(this.$options.el).dataset;
         this.commentListUrl = dataset.commentListUrl;
         this.commentSaveUrl = dataset.commentSaveUrl;
+        this.commentUpdateUrl = dataset.commentUpdateUrl;
         this.userEmail = dataset.userEmail;
 
         EventBus.$on('commentCreated', (comment) => {
             this.saveToServer(comment);
+        });
+        EventBus.$on('commentEdited', (comment) => {
+            this.updateToServer(comment);
         });
     },
 
