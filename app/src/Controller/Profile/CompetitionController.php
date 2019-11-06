@@ -97,11 +97,17 @@ class CompetitionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $competition->setAuthor($this->getUser());
 
+            $this->attachmentService->manageAddedAttachments($competition);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($competition);
             $entityManager->flush();
 
             return $this->redirect($this->generateUrl('profile_competitions_list'));
+        }
+
+        if ($form->getErrors(true)->count()) {
+            $this->addFlash('error', 'Загальний розмір файлів не має перевищувати 32М за один раз.');
         }
 
         return $this->render('profile/competition/edit.html.twig', [

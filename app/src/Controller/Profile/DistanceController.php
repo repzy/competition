@@ -84,11 +84,17 @@ class DistanceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $distance->setCompetition($competition);
 
+            $this->attachmentService->manageAddedAttachments($distance);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($distance);
             $entityManager->flush();
 
             return $this->redirect($this->generateUrl('profile_competitions_list'));
+        }
+
+        if ($form->getErrors(true)->count()) {
+            $this->addFlash('error', 'Загальний розмір файлів не має перевищувати 32М за один раз.');
         }
 
         return $this->render('profile/distance/edit.html.twig', [

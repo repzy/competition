@@ -6,10 +6,14 @@ use App\Entity\Attachment;
 use App\Entity\Competition;
 use App\Entity\Distance;
 use App\Specification\MimeTypeSpecification;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AttachmentService
 {
@@ -29,19 +33,27 @@ class AttachmentService
     private $mimeTypeSpecification;
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * AttachmentService constructor.
      * @param ParameterBagInterface $parameterBag
      * @param EntityManagerInterface $entityManager
      * @param MimeTypeSpecification $mimeTypeSpecification
+     * @param SessionInterface $session
      */
     public function __construct(
         ParameterBagInterface $parameterBag,
         EntityManagerInterface $entityManager,
-        MimeTypeSpecification $mimeTypeSpecification
+        MimeTypeSpecification $mimeTypeSpecification,
+        SessionInterface $session
     ) {
         $this->parameterBag = $parameterBag;
         $this->entityManager = $entityManager;
         $this->mimeTypeSpecification = $mimeTypeSpecification;
+        $this->session = $session;
     }
 
     /**
@@ -75,14 +87,20 @@ class AttachmentService
      */
     public function manageAddedAttachments($entity): void
     {
-        /** @var Attachment[] $addedAttachments */
-        $addedAttachments = $entity->getAttachments()->getInsertDiff();
+        if ($entity->getAttachments() instanceof PersistentCollection) {
+            $addedAttachments = $entity->getAttachments()->getInsertDiff();
+        } elseif ($entity->getAttachments() instanceof ArrayCollection) {
+            $addedAttachments = $entity->getAttachments();
+        } else {
+            throw new \InvalidArgumentException();
+        }
 
         foreach ($addedAttachments as $addedAttachment) {
             $mimeType = $addedAttachment->getFile()->getClientMimeType();
 
             if (!$this->mimeTypeSpecification->isSatisfiedBy($mimeType)) {
                 $entity->removeAttachment($addedAttachment);
+                $this->session->getFlashBag()->add('error', 'Сервіс не підтримує заватнаження файлів з розширенням '. $addedAttachment->getFile()->getExtension());
                 continue;
             }
 
