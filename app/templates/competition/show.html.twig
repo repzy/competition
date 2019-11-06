@@ -34,12 +34,12 @@
                 {% for attachment in competition.attachments %}
                     <div class="mb-1">
                         <div class="row align-items-center">
-                            <div class="col-auto">
+                            <div class="col-auto pr-0">
                                 <a href="{{ path('attachment_download', {'id': attachment.id}) }}" class="btn btn-primary">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </div>
-                            <div class="col-auto">{{ attachment.name ~ '.' ~ attachment.extension }}</div>
+                            <div class="col-auto" style="max-width: 75%">{{ attachment.name ~ '.' ~ attachment.extension }}</div>
                         </div>
                     </div>
                 {% endfor %}

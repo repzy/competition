@@ -12,7 +12,7 @@
         <header class="header">
             {% block header %}
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div class="container" style="padding-left: 15px; padding-right: 15px;">
+                    <div class="container pl-sm-3 pr-sm-3">
                         <a class="navbar-brand" href="{{ path('competitions_list') }}">БЗСТУ</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
@@ -21,17 +21,17 @@
                             <ul class="navbar-nav ml-auto">
                                 {% if is_granted('ROLE_USER') %}
                                     <li class="nav-item pr-lg-2">
-                                        <a class="col-sm-12 mt-sm-1 btn btn-outline-light" href="{{ path('profile_competitions_list') }}">Профіль</a>
+                                        <a class="col-sm-12 mt-1 btn btn-outline-light" href="{{ path('profile_competitions_list') }}">Профіль</a>
                                     </li >
                                     <li class="nav-item">
-                                        <a class="col-sm-12 mt-sm-1 btn btn-outline-light" href="{{ path('app_logout') }}">Вихід</a>
+                                        <a class="col-sm-12 mt-1 btn btn-outline-light" href="{{ path('app_logout') }}">Вихід</a>
                                     </li>
                                 {% else %}
                                     <li class="nav-item pr-lg-2">
-                                        <a class="col-sm-12 mt-sm-1 btn btn-outline-light" href="{{ path('app_registration') }}">Реєстрація</a>
+                                        <a class="col-sm-12 mt-1 btn btn-outline-light" href="{{ path('app_registration') }}">Реєстрація</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="col-sm-12 mt-sm-1 btn btn-outline-light" href="{{ path('app_login') }}">Увійти</a>
+                                        <a class="col-sm-12 mt-1 btn btn-outline-light" href="{{ path('app_login') }}">Увійти</a>
                                     </li>
                                 {% endif %}
                             </ul>
