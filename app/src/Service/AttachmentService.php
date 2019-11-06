@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Attachment;
 use App\Entity\Competition;
+use App\Entity\Distance;
 use App\Specification\MimeTypeSpecification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -52,6 +53,9 @@ class AttachmentService
         $file = $attachment->getFile();
         $attachmentFolder = $this->parameterBag->get('attachment_folder');
 
+        $fileSystem = new Filesystem();
+        $fileSystem->mkdir($attachmentFolder);
+
         $file->move($attachmentFolder, $attachment->getFileName());
     }
 
@@ -67,37 +71,37 @@ class AttachmentService
     }
 
     /**
-     * @param Competition $competition
+     * @param Competition|Distance $entity
      */
-    public function manageAddedAttachments(Competition $competition): void
+    public function manageAddedAttachments($entity): void
     {
         /** @var Attachment[] $addedAttachments */
-        $addedAttachments = $competition->getAttachments()->getInsertDiff();
+        $addedAttachments = $entity->getAttachments()->getInsertDiff();
 
         foreach ($addedAttachments as $addedAttachment) {
             $mimeType = $addedAttachment->getFile()->getClientMimeType();
 
             if (!$this->mimeTypeSpecification->isSatisfiedBy($mimeType)) {
-                $competition->removeAttachment($addedAttachment);
+                $entity->removeAttachment($addedAttachment);
                 continue;
             }
 
             $addedAttachment->setName(pathinfo($addedAttachment->getFile()->getClientOriginalName(), PATHINFO_FILENAME));
             $addedAttachment->setExtension($addedAttachment->getFile()->getClientOriginalExtension());
             $this->entityManager->persist($addedAttachment);
-            $this->entityManager->flush();
+            $this->entityManager->flush($addedAttachment);
 
             $this->saveFile($addedAttachment);
         }
     }
 
     /**
-     * @param Competition $competition
+     * @param Competition|Distance $entity
      */
-    public function manageRemovedAttachments(Competition $competition): void
+    public function manageRemovedAttachments($entity): void
     {
         /** @var Attachment[] $removedAttachments */
-        $removedAttachments = $competition->getAttachments()->getDeleteDiff();
+        $removedAttachments = $entity->getAttachments()->getDeleteDiff();
 
         foreach ($removedAttachments as $removedAttachment) {
             $this->deleteFile($removedAttachment);

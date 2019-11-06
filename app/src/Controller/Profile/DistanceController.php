@@ -125,12 +125,12 @@ class DistanceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $competition = $form->getData();
+            $distance = $form->getData();
 
-            $this->attachmentService->manageAddedAttachments($competition);
-            $this->attachmentService->manageRemovedAttachments($competition);
+            $this->attachmentService->manageAddedAttachments($distance);
+            $this->attachmentService->manageRemovedAttachments($distance);
 
-            $entityManager->persist($competition);
+            $entityManager->persist($distance);
             $entityManager->flush();
 
             return $this->redirect($this->generateUrl('profile_competitions_list'));
