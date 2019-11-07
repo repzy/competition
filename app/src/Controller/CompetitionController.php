@@ -8,7 +8,6 @@ use App\Repository\CompetitionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -38,7 +37,6 @@ class CompetitionController extends AbstractController
      */
     public function listAction(Request $request)
     {
-        throw new NotFoundHttpException();
         $searchForm = $this->createForm(SearchType::class);
 
         $searchForm->handleRequest($request);

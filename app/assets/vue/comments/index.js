@@ -20,11 +20,14 @@ new Vue({
     },
 
     methods: {
+        toggleLoaded: function() {
+            this.isLoaded = !this.isLoaded
+        },
         fetchFromServer: function() {
             fetch(this.commentListUrl)
                 .then(response => response.json())
                 .then(data => this.commentNodes = data)
-                .then(() => this.isLoaded = true);
+                .then(() => this.toggleLoaded());
         },
         saveToServer: function(comment) {
             fetch(this.commentSaveUrl, {

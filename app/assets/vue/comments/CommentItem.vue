@@ -23,8 +23,10 @@
             <div v-if="isUser">
                 <span class="text-muted" style="cursor: pointer" v-on:click="toggleHidden">Відповісти</span>
                 <span class="text-muted" style="cursor: pointer" v-on:click="toggleEdit" v-if="isOwner">Редагувати</span>
-                <div v-bind:class="{ 'd-none': isHidden }">
-                    <CommentForm v-bind:parent_id="comment.id"></CommentForm>
+                <div v-bind:class="{ 'd-none': isHidden}">
+                    <div class="mt-2">
+                        <CommentForm v-bind:parent_id="comment.id"></CommentForm>
+                    </div>
                 </div>
             </div>
             <div v-if="hasChildren" class="ml-5">
