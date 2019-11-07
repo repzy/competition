@@ -4,9 +4,18 @@
     <div class="row h-100">
         <div class="my-auto mx-auto">
             <div class="text-muted text-center">
-                <h1 class="col-12 display-1 d-block">500</h1><br>
-                <span class="h3">Сервіс не працює</span>
+                {% block errorbody %}
+                    <h1 class="col-12 display-1 d-block">500</h1><br>
+                    <span class="h3">Сервіс не працює</span>
+                {% endblock %}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        document.querySelector('article[class="container"]').classList.add("h-100");
+    </script>
 {% endblock %}

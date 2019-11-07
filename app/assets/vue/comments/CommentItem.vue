@@ -86,7 +86,9 @@
                 this.isHidden = true;
             });
             EventBus.$on('commentUpdated', (comment) => {
-                this.comment.text = comment.text;
+                if (this.comment.id === comment.id) {
+                    this.comment.text = comment.text;
+                }
                 this.isEditing = false;
             });
         },
