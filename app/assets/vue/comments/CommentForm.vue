@@ -39,7 +39,7 @@
 
         methods: {
             createComment: function() {
-                if(!this.text.trim()) return;
+                if(!this.commentText.trim()) return;
 
                 if (this.comment_id) {
                     let comment = { id: this.comment_id, user: this.user, text: this.commentText, children: [], parent_id: this.parent_id };

@@ -7,7 +7,7 @@
 
     {% if app.request.requestUri == path('profile_competitions_list') %}
         <div class="mb-4 text-right">
-            <a href="{{ path('profile_competitions_new') }}">Створити</a>
+            <a href="{{ path('profile_competitions_new') }}">Створити змагання</a>
         </div>
     {% endif %}
 
@@ -31,7 +31,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <div class="text-center text-muted mt-5">Пусто</div>
+            <div class="text-center text-muted mt-5">Ви ще не створили ні одного змагання. Нажміть "Створити", щоб перейти на сторніку сворення.</div>
         {% endif %}
     </div>
 

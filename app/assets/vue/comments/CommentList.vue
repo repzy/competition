@@ -15,7 +15,7 @@
             <CommentForm></CommentForm>
         </div>
         <div v-else-if="!hasComments" class="text-center text-muted">
-            Пусто
+            Не додано жодного коментаря.
         </div>
     </div>
 </template>
