@@ -10,13 +10,13 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RegistrationFormType extends AbstractType
+class ChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('password', RepeatedType::class, [
+            ->add('old_password', PasswordType::class)
+            ->add('new_password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
                 'first_options'  => ['label' => 'Пароль'],
@@ -27,14 +27,13 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'      => User::class,
             // enable/disable CSRF protection for this form
             'csrf_protection' => true,
             // the name of the hidden HTML field that stores the token
             'csrf_field_name' => '_token',
             // an arbitrary string used to generate the value of the token
             // using a different string for each form improves its security
-            'csrf_token_id'   => 'registration_form',
+            'csrf_token_id'   => 'change_password_form',
         ]);
     }
 }

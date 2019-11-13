@@ -39,3 +39,4 @@ require('@fortawesome/fontawesome-free/sprites/solid.svg');
 
 // Bootstrap
 require('bootstrap/js/dist/collapse.js');
+require('bootstrap/js/dist/dropdown.js');

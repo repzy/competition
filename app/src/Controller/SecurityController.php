@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordFormType;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\CustomAuthenticator;
 use App\Specification\PasswordSpecification;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,12 +29,19 @@ class SecurityController extends AbstractController
      */
     private $passwordSpecification;
 
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
     public function __construct(
         UserRepository $userRepository,
-        PasswordSpecification $passwordSpecification
+        PasswordSpecification $passwordSpecification,
+        UserPasswordEncoderInterface $passwordEncoder
     ) {
         $this->userRepository = $userRepository;
         $this->passwordSpecification = $passwordSpecification;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -112,6 +121,41 @@ class SecurityController extends AbstractController
         }
 
         return $this->render('security/registration.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/profile/password/change", name="profile_password_change")
+     * @IsGranted("ROLE_USER")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function changePassword(Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $form = $this->createForm(ChangePasswordFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $oldPassword = $form->get('old_password')->getData();
+            $newPassword = $form->get('new_password')->getData();
+
+            if ($this->passwordEncoder->isPasswordValid($user, $oldPassword)) {
+                $user->setPassword($this->passwordEncoder->encodePassword($user, $newPassword));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash('success', 'Пароль успішно оновлено.');
+            } else {
+                $this->addFlash('error', 'Старий пароль не вірний.');
+            }
+        }
+
+        return $this->render('security/change_password.html.twig', [
             'form' => $form->createView()
         ]);
     }

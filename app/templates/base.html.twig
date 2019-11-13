@@ -20,9 +20,15 @@
                         <div class="collapse navbar-collapse " id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto">
                                 {% if is_granted('ROLE_USER') %}
-                                    <li class="nav-item pr-lg-2">
-                                        <a class="col-sm-12 mt-1 btn btn-outline-light" href="{{ path('profile_competitions_list') }}">Профіль</a>
-                                    </li >
+                                    <li class="nav-item dropdown pr-lg-2">
+                                        <a class="col-sm-12 mt-1 btn btn-outline-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Профіль
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="{{ path('profile_competitions_list') }}">Мої змагання</a>
+                                            <a class="dropdown-item" href="{{ path('profile_password_change') }}">Змінити пароль</a>
+                                        </div>
+                                    </li>
                                     <li class="nav-item">
                                         <a class="col-sm-12 mt-1 btn btn-outline-light" href="{{ path('app_logout') }}">Вихід</a>
                                     </li>
