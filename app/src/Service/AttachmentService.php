@@ -103,7 +103,7 @@ class AttachmentService
                 continue;
             }
 
-            $addedAttachment->setName(pathinfo($addedAttachment->getFile()->getClientOriginalName(), PATHINFO_FILENAME));
+            $addedAttachment->setName(preg_replace('/\\.[^.\\s]{3,4}$/', '', $addedAttachment->getFile()->getClientOriginalName()));
             $addedAttachment->setExtension($addedAttachment->getFile()->getClientOriginalExtension());
             $this->entityManager->persist($addedAttachment);
             $this->entityManager->flush($addedAttachment);
