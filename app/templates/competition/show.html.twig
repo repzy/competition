@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block meta_title %}{{ competition.name }}{% endblock %}
+{% block og_title %}{{ competition.name }}{% endblock %}
+{% block twitter_title %}{{ competition.name }}{% endblock %}
+
 {% block article %}
     <div>
         {% if app.user and competition.author is same as(app.user) %}

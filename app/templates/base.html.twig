@@ -3,7 +3,26 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>{% block title %}База змагань зі спортивного туризму України{% endblock %}</title>
+        <!-- Primary Meta Tags -->
+        {% set title = "База змагань зі спортивного туризму України" %}
+        <title>{% block title %}{{ title }}{% endblock %}</title>
+        <meta name="title" content="{% block meta_title %}{{ title }}{% endblock %}">
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{% block og_url %}{{ app.request.uri }}{% endblock %}">
+        <meta property="og:title" content="{% block og_title %}{{ title }}{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}{% endblock %}">
+        <meta property="og:image" content="{% block og_image %}{% endblock %}">
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="{% block twitter_url %}{{ app.request.uri }}{% endblock %}">
+        <meta property="twitter:title" content="{% block twitter_title %}{{ title }}{% endblock %}">
+        <meta property="twitter:description" content="{% block twitter_description %}{% endblock %}">
+        <meta property="twitter:image" content="{% block twitter_image %}{% endblock %}">
+
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
