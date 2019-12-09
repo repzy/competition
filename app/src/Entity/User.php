@@ -33,6 +33,11 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $resettingCode;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,5 +114,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getResettingCode(): ?string
+    {
+        return $this->resettingCode;
+    }
+
+    public function setResettingCode(?string $resettingCode): self
+    {
+        $this->resettingCode = $resettingCode;
+
+        return $this;
     }
 }

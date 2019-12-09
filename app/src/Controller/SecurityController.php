@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\RegistrationFormType;
+use App\Form\ResettingChangeType;
+use App\Form\ResettingRequestType;
 use App\Repository\UserRepository;
 use App\Security\CustomAuthenticator;
 use App\Specification\PasswordSpecification;
+use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -167,5 +170,74 @@ class SecurityController extends AbstractController
     {
         // controller can be blank: it will never be executed!
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
+
+    /**
+     * @Route("/resetting/request", name="resetting_request")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function resettingRequest(Request $request): Response
+    {
+        $form = $this->createForm(ResettingRequestType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form->get('email')->getData();
+            $user = $this->userRepository->findOneBy(['email' => $email]);
+            if ($user instanceof User) {
+                $resettingCode = Uuid::uuid4()->toString();
+                $user->setResettingCode($resettingCode);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+//                send message to user
+
+                $this->addFlash('success', 'На ваш емейл надіслано повідомлення з посиланням для відновлення паролю.');
+            } else {
+                $this->addFlash('error', 'Користувача не знайдено.');
+            }
+        }
+
+        return $this->render('security/resetting/request.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/resetting/change/{code}", name="resetting_change")
+     *
+     * @param Request $request
+     * @param string $code
+     * @return Response
+     */
+    public function resettingChange(Request $request, string $code): Response
+    {
+        $form = $this->createForm(ResettingChangeType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newPassword = $form->get('password')->getData();
+            $user = $this->userRepository->findOneBy(['resettingCode' => $code]);
+            if ($user instanceof User) {
+                $user->setPassword($this->passwordEncoder->encodePassword($user, $newPassword));
+                $user->setResettingCode(null);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash('success', 'Пароль успішно змінено.');
+            } else {
+                $this->addFlash('error', 'Користувача не знайдено.');
+            }
+        }
+
+        return $this->render('security/resetting/change.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

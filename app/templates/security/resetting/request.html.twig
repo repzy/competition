@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Відновлення паролю{% endblock %}
+
+{% block article %}
+    <div class="container-fluid">
+        <div class="row justify-content-center no-gutter">
+            <div class="col-md-6 col-lg-6">
+                <div class="card-body">
+                    <div class="mb-3">
+                        {% include 'flashes.html.twig' %}
+                    </div>
+
+                    <h5 class="card-title text-center">Відновлення паролю</h5>
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Змінити</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
