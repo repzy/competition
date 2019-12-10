@@ -43,8 +43,8 @@ services:
         ports:
           - "3000:3000"
         working_dir: /var/www/app
-        environment:
-            NODE_ENV: development
+        env_file:
+            - ./app/.env
         entrypoint: ["sh", "-c"]
         command: ["yarn install && yarn watch"]
         volumes:
