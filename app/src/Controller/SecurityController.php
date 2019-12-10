@@ -9,6 +9,7 @@ use App\Form\ResettingChangeType;
 use App\Form\ResettingRequestType;
 use App\Repository\UserRepository;
 use App\Security\CustomAuthenticator;
+use App\Service\MailerService;
 use App\Specification\PasswordSpecification;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,6 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class SecurityController extends AbstractController
 {
@@ -37,14 +41,28 @@ class SecurityController extends AbstractController
      */
     private $passwordEncoder;
 
+    /**
+     * @var MailerService
+     */
+    private $mailerService;
+
+    /**
+     * SecurityController constructor.
+     * @param UserRepository $userRepository
+     * @param PasswordSpecification $passwordSpecification
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param MailerService $mailerService
+     */
     public function __construct(
         UserRepository $userRepository,
         PasswordSpecification $passwordSpecification,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        MailerService $mailerService
     ) {
         $this->userRepository = $userRepository;
         $this->passwordSpecification = $passwordSpecification;
         $this->passwordEncoder = $passwordEncoder;
+        $this->mailerService = $mailerService;
     }
 
     /**
@@ -177,6 +195,10 @@ class SecurityController extends AbstractController
      *
      * @param Request $request
      * @return Response
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function resettingRequest(Request $request): Response
     {
@@ -186,6 +208,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
             $user = $this->userRepository->findOneBy(['email' => $email]);
+
             if ($user instanceof User) {
                 $resettingCode = Uuid::uuid4()->toString();
                 $user->setResettingCode($resettingCode);
@@ -194,7 +217,9 @@ class SecurityController extends AbstractController
                 $em->persist($user);
                 $em->flush();
 
-//                send message to user
+                $this->mailerService->sendResettingMessage($user->getEmail(), $this->generateUrl('resetting_change', [
+                    'code' => $resettingCode
+                ]));
 
                 $this->addFlash('success', 'На ваш емейл надіслано повідомлення з посиланням для відновлення паролю.');
             } else {
@@ -222,6 +247,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('password')->getData();
             $user = $this->userRepository->findOneBy(['resettingCode' => $code]);
+
             if ($user instanceof User) {
                 $user->setPassword($this->passwordEncoder->encodePassword($user, $newPassword));
                 $user->setResettingCode(null);
