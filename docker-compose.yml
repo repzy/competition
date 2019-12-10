@@ -10,7 +10,7 @@ services:
 #        volumes:
 #            - ./docker/db:/var/lib/mysql
         env_file:
-            - ./app/.env
+            - ./app/.env.local.php
 
     php:
         build: ./docker/php
@@ -44,7 +44,7 @@ services:
           - "3000:3000"
         working_dir: /var/www/app
         env_file:
-            - ./app/.env
+            - ./app/.env.local.php
         entrypoint: ["sh", "-c"]
         command: ["yarn install && yarn watch"]
         volumes:
