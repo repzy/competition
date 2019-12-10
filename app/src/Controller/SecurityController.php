@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -219,7 +220,7 @@ class SecurityController extends AbstractController
 
                 $this->mailerService->sendResettingMessage($user->getEmail(), $this->generateUrl('resetting_change', [
                     'code' => $resettingCode
-                ]));
+                ], UrlGeneratorInterface::ABSOLUTE_URL));
 
                 $this->addFlash('success', 'На ваш емейл надіслано повідомлення з посиланням для відновлення паролю.');
             } else {
