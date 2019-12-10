@@ -1,14 +1,7 @@
 {
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.22.4",
-        "bootstrap": "^4.3.1",
-        "jquery": "^3.4.1",
         "node-sass": "^4.12.0",
-        "popper.js": "^1.15.0",
         "sass-loader": "^7.3.1",
-        "vue": "^2.6.10",
-        "vue-loader": "^15.0.11",
-        "vue-template-compiler": "^2.6.10",
         "webpack-notifier": "^1.8.0"
     },
     "license": "UNLICENSED",
@@ -23,7 +16,14 @@
         "@ckeditor/ckeditor5-build-classic": "^12.4.0",
         "@ckeditor/ckeditor5-vue": "^1.0.0",
         "@fortawesome/fontawesome-free": "^5.11.2",
+        "@symfony/webpack-encore": "^0.28.2",
+        "bootstrap": "^4.4.1",
+        "jquery": "^3.4.1",
         "moment": "^2.24.0",
-        "pikaday": "^1.8.0"
+        "pikaday": "^1.8.0",
+        "popper.js": "^1.16.0",
+        "vue": "^2.6.10",
+        "vue-loader": "^15.7.2",
+        "vue-template-compiler": "^2.6.10"
     }
 }
