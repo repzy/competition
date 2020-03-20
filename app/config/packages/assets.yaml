@@ -3,4 +3,4 @@ framework:
         json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
         packages:
             absolute:
-                base_url: http://167.172.163.29:8080/
+                base_url: http://127.0.0.1:8080/
