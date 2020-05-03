@@ -10,7 +10,7 @@ services:
 #        volumes:
 #            - ./docker/db:/var/lib/mysql
         env_file:
-            - ./app/.env
+            - .env
 
     php:
         build: ./docker/php
@@ -18,10 +18,10 @@ services:
         ports:
             - "9000:9000"
         volumes:
-            - ./app:/var/www/app
+            - .:/var/www
         entrypoint: ["sh", "-c"]
         command: ["composer install && php-fpm"]
-        working_dir: /var/www/app
+        working_dir: /var/www
         links:
             - db
 
@@ -31,7 +31,7 @@ services:
         ports:
             - "8080:80"
         volumes:
-            - ./app:/var/www/app
+            - .:/var/www
             - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
             - ./docker/nginx/logs:/var/log/nginx
         links:
@@ -42,11 +42,11 @@ services:
         container_name: bzstu_node
         ports:
           - "3000:3000"
-        working_dir: /var/www/app
+        working_dir: /var/www
         env_file:
-            - ./app/.env
+            - .env
         entrypoint: ["sh", "-c"]
         command: ["yarn install && yarn watch"]
         volumes:
-            - ./app:/var/www/app
-            - ./app/node_modules:/var/www/app/node_modules
+            - .:/var/www
+            - ./node_modules:/var/www/node_modules
