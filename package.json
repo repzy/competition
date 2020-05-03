@@ -15,7 +15,7 @@
         "@fortawesome/fontawesome-free": "^5.11.2",
         "@symfony/webpack-encore": "^0.28.2",
         "bootstrap": "^4.4.1",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "moment": "^2.24.0",
         "node-sass": "^4.12.0",
         "pikaday": "^1.8.0",
