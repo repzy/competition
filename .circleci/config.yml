@@ -1,38 +1,39 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: cimg/php:7.4-node
+  deploy:
+    machine:
+      enabled: true
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "12:3a:30:37:95:2f:fa:47:d0:2d:2c:c4:e5:e9:89:2c"
       - run:
-          name: Install docker compose
+          name: Deploy Over SSH
           command: |
-            sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            sudo chmod +x /usr/local/bin/docker-compose
-            sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-      - setup_remote_docker
-      - run:
-          name: Configure .env.local file
-          command: |
-            echo MYSQL_PASSWORD=$MYSQL_PASSWORD >> .env.local
-            echo MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD >> .env.local
-            echo NODE_ENV=production >> .env.local
-            echo APP_SECRET=$APP_SECRET >> .env.local
-            echo MAILER_PASSWORD=$MAILER_PASSWORD >> .env.local
-      - run:
-          name: Dump environment variables
-          command: composer dump-env prod
-      - run:
-          name: Run docker compose
-          command: docker-compose up -d
-      - run:
-          name: Create schema
-          command: docker exec -it bzstu_php bin/console doctrine:schema:create
-      - run:
-          name: Run migrations
-          command: docker exec -it bzstu_php bin/console doctrine:migration:migrate --no-interaction
+            ssh $SSH_USER@$SSH_HOST "cd /home/competition
+            docker-compose down
+            git reset --hard origin/master
+            git pull origin master
+            export MYSQL_USER=$MYSQL_USER
+            export MYSQL_PASSWORD=$MYSQL_PASSWORD
+            export MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+            export NODE_ENV=production
+            export APP_SECRET=$APP_SECRET
+            export MAILER_PASSWORD=$MAILER_PASSWORD
+            envsubst '${MYSQL_USER},${MYSQL_PASSWORD},${MYSQL_ROOT_PASSWORD},${NODE_ENV},${APP_SECRET},${MAILER_PASSWORD}' < .env > .env.tmp
+            cp .env.tmp .env
+            rm .env.tmp
+            docker-compose up -d
+            sleep 10
+            docker exec bzstu_php composer dump-env prod
+            docker exec bzstu_php php bin/console doctrine:migrations:migrate --no-interaction
+            "
 workflows:
-  build:
+  version: 2
+  deploy:
     jobs:
-      - build
+      - deploy:
+          filters:
+            branches:
+              only: master
