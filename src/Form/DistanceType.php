@@ -47,7 +47,9 @@ class DistanceType extends AbstractType
                 'label' => 'Додаткова інформація',
                 'required' => false
             ])
-            ->add('Зберегти', SubmitType::class)
+            ->add('Save', SubmitType::class, [
+                'label' => 'Зберегти',
+            ])
         ;
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use function Doctrine\ORM\QueryBuilder;
 
@@ -19,7 +20,7 @@ use function Doctrine\ORM\QueryBuilder;
  */
 class CompetitionRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Competition::class);
     }

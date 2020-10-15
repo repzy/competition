@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cimg/php:7.4-node
+    steps:
+      - checkout
+      - run:
+          name: Install docker compose
+          command: |
+            sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+      - setup_remote_docker
+      - run:
+          name: Configure .env.local file
+          command: |
+            echo MYSQL_PASSWORD=$MYSQL_PASSWORD >> .env.local
+            echo MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD >> .env.local
+            echo NODE_ENV=production >> .env.local
+            echo APP_SECRET=$APP_SECRET >> .env.local
+            echo MAILER_PASSWORD=$MAILER_PASSWORD >> .env.local
+      - run:
+          name: Dump environment variables
+          command: composer dump-env prod
+      - run:
+          name: Run docker compose
+          command: docker-compose up -d
+      - run:
+          name: Create schema
+          command: docker exec -it bzstu_php bin/console doctrine:schema:create
+      - run:
+          name: Run migrations
+          command: docker exec -it bzstu_php bin/console doctrine:migration:migrate --no-interaction
+workflows:
+  build:
+    jobs:
+      - build
