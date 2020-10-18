@@ -11,16 +11,21 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
+            echo MYSQL_USER=$MYSQL_USER >> sshenv
+            echo MYSQL_PASSWORD=$MYSQL_PASSWORD >> sshenv
+            echo MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD >> sshenv
+            echo NODE_ENV=production >> sshenv
+            echo APP_SECRET=$APP_SECRET >> sshenv
+            echo MAILER_PASSWORD=$MAILER_PASSWORD >> sshenv
+
+            scp sshenv $SSH_USER@$SSH_HOST:~/.ssh/environment
             ssh $SSH_USER@$SSH_HOST "cd /home/competition
+            export $(grep -v '^#' ~/.ssh/environment | xargs)
+            cat ~/.ssh/environment
+            echo $MYSQL_USER
             docker-compose down
             git reset --hard origin/master
             git pull origin master
-            export MYSQL_USER=$MYSQL_USER
-            export MYSQL_PASSWORD=$MYSQL_PASSWORD
-            export MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-            export NODE_ENV=production
-            export APP_SECRET=$APP_SECRET
-            export MAILER_PASSWORD=$MAILER_PASSWORD
             envsubst '${MYSQL_USER},${MYSQL_PASSWORD},${MYSQL_ROOT_PASSWORD},${NODE_ENV},${APP_SECRET},${MAILER_PASSWORD}' < .env > .env.tmp
             cp .env.tmp .env
             rm .env.tmp
