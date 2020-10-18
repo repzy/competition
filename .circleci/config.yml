@@ -23,7 +23,6 @@ jobs:
             export MAILER_PASSWORD=$MAILER_PASSWORD
             envsubst '${MYSQL_USER},${MYSQL_PASSWORD},${MYSQL_ROOT_PASSWORD},${NODE_ENV},${APP_SECRET},${MAILER_PASSWORD}' < .env > .env.tmp
             cp .env.tmp .env
-#            rm .env.tmp
             docker-compose up -d
             sleep 10
             docker exec bzstu_php composer dump-env prod
