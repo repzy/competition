@@ -25,7 +25,8 @@ jobs:
             docker-compose down
             git reset --hard origin/master
             git pull origin master
-            envsubst '${MYSQL_USER},${MYSQL_PASSWORD},${MYSQL_ROOT_PASSWORD},${NODE_ENV},${APP_SECRET},${MAILER_PASSWORD}' < .env > .env.tmp
+            MYSQL_USER=$MYSQL_USER envsubst '${MYSQL_USER},${MYSQL_PASSWORD},${MYSQL_ROOT_PASSWORD},${NODE_ENV},${APP_SECRET},${MAILER_PASSWORD}' < .env > .env.tmp
+            cat .env.tmp
             docker-compose up -d
             sleep 10
             docker exec bzstu_php composer dump-env prod
