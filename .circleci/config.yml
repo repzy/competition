@@ -21,6 +21,7 @@ jobs:
             export NODE_ENV=production
             export APP_SECRET=$APP_SECRET
             export MAILER_PASSWORD=$MAILER_PASSWORD
+            export -p
             envsubst '${MYSQL_USER},${MYSQL_PASSWORD},${MYSQL_ROOT_PASSWORD},${NODE_ENV},${APP_SECRET},${MAILER_PASSWORD}' < .env > .env.tmp
             cp .env.tmp .env
             rm .env.tmp
