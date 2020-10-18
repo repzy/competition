@@ -21,8 +21,7 @@ jobs:
             scp sshenv $SSH_USER@$SSH_HOST:~/.ssh/environment
             ssh $SSH_USER@$SSH_HOST "cd /home/competition
             export $(grep -v '^#' ~/.ssh/environment | xargs)
-            cat ~/.ssh/environment
-            echo $MYSQL_USER
+            source ~/.ssh/environment
             docker-compose down
             git reset --hard origin/master
             git pull origin master
