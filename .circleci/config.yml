@@ -26,8 +26,7 @@ jobs:
             git reset --hard origin/master
             git pull origin master
             export $(grep -v '^#' ~/.ssh/environment | xargs)
-            envsubst < .env > .env.tmp
-            cat .env.tmp
+            envsubst < .env
             docker-compose up -d
             sleep 10
             docker exec bzstu_php composer dump-env prod
