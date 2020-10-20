@@ -18,6 +18,8 @@ jobs:
             echo APP_SECRET=$APP_SECRET >> sshenv
             echo MAILER_PASSWORD=$MAILER_PASSWORD >> sshenv
 
+            cat sshenv
+
             scp sshenv $SSH_USER@$SSH_HOST:~/.ssh/environment
             envsubst < environments.sh | ssh $SSH_USER@$SSH_HOST "cd /home/competition
             docker-compose down
