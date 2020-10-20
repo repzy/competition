@@ -18,12 +18,12 @@ jobs:
             echo APP_SECRET=$APP_SECRET >> sshenv
             echo MAILER_PASSWORD=$MAILER_PASSWORD >> sshenv
 
-            scp sshenv $SSH_USER@$SSH_HOST:~/.ssh/environment
-            envsubst < environments.sh | ssh $SSH_USER@$SSH_HOST "cd /home/competition
+            scp sshenv $SSH_USER@$SSH_HOST:/root/.ssh/environment
+            ssh $SSH_USER@$SSH_HOST "cd /home/competition
             docker-compose down
             git reset --hard origin/master
             git pull origin master
-            export $(grep -v '^#' ~/.ssh/environment | xargs)
+            export $(grep -v '^#' /root/.ssh/environment | xargs)
             envsubst < .env | > .env.tmp
             cat .env.tmp
             docker-compose up -d
