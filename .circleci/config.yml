@@ -24,7 +24,7 @@ jobs:
             git reset --hard origin/master
             git pull origin master
             export $(grep -v '^#' /root/.ssh/environment | xargs)
-            envsubst < .env | > .env.tmp
+            envsubst < .env > .env.tmp
             cat .env.tmp
 
             "
