@@ -17,6 +17,7 @@ jobs:
             echo NODE_ENV=production >> sshenv
             echo APP_SECRET=$APP_SECRET >> sshenv
             echo MAILER_PASSWORD=$MAILER_PASSWORD >> sshenv
+            echo MYSQL_DATABASE=$MYSQL_DATABASE >> sshenv
 
             scp sshenv $SSH_USER@$SSH_HOST:~/.ssh/environment
             ssh $SSH_USER@$SSH_HOST "cd /home/competition
@@ -26,7 +27,6 @@ jobs:
             export $(grep -v '^#' ~/.ssh/environment | xargs)
             envsubst < .env > .env.tmp
             mv .env.tmp .env
-            rm .env.tmp
             docker-compose up -d
             sleep 10
             docker exec bzstu_php composer dump-env prod
