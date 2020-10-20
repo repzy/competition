@@ -29,7 +29,7 @@ services:
         image: nginx:latest 
         container_name: bzstu_ngnix
         ports:
-            - "8080:80"
+            - "80:80"
         volumes:
             - .:/var/www
             - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
