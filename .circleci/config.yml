@@ -24,7 +24,7 @@ jobs:
             git reset --hard origin/master
             git pull origin master
             export $(grep -v '^#' ~/.ssh/environment | xargs)
-            envsubst '${MYSQL_USER} ${MYSQL_PASSWORD} ${MYSQL_ROOT_PASSWORD} ${NODE_ENV} ${APP_SECRET} ${MAILER_PASSWORD}' < .env > .env.tmp
+            envsubst '$MYSQL_USER $MYSQL_PASSWORD $MYSQL_ROOT_PASSWORD $NODE_ENV $APP_SECRET $MAILER_PASSWORD' < .env > .env.tmp
             cat .env.tmp
             docker-compose up -d
             sleep 10
