@@ -19,7 +19,7 @@ jobs:
             echo MAILER_PASSWORD=$MAILER_PASSWORD >> sshenv
 
             scp sshenv $SSH_USER@$SSH_HOST:~/.ssh/environment
-            ssh $SSH_USER@$SSH_HOST "cd /home/competition
+            envsubst < environments.sh | ssh $SSH_USER@$SSH_HOST "cd /home/competition
             docker-compose down
             git reset --hard origin/master
             git pull origin master
