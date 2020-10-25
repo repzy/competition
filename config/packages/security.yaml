@@ -33,3 +33,5 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/, requires_channel: http, host: 127.0.0.1$ }
+        - { path: ^/, requires_channel: https, host: bzstu.com.ua$ }

@@ -31,7 +31,7 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/", name="competitions_list")
+     * @Route("", name="competitions_list")
      * @Route("/page{page}/", name="competitions_list_paging", requirements={"page": "\d+"})
      * @return Response
      */
@@ -48,9 +48,7 @@ class CompetitionController extends AbstractController
             $data = ['page' => (int) $request->get('page')];
         }
 
-        if ($data['page'] === 0) {
-            $data['page'] = 1;
-        }
+        $data['page'] = max(1, $data['page']);
 
         $competitions = $this->competitionRepository->search($data);
 
