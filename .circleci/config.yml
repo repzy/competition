@@ -32,6 +32,7 @@ jobs:
             sleep 30
             docker exec bzstu_php composer dump-env prod
             docker exec bzstu_php php bin/console doctrine:migrations:migrate --no-interaction
+            docker exec bzstu_node yarn build
             "
 workflows:
   version: 2
