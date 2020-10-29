@@ -1,5 +1,4 @@
-User-agent: *
-Allow: /
-
 User-agent: Googlebot
 Disallow: /profile/
+
+Sitemap: https://bzstu.com.ua/sitemap.xml

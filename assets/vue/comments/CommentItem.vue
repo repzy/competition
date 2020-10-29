@@ -3,7 +3,7 @@
         <div class="mb-4 mt-3">
             <div class="row align-items-center mb-1">
                 <div class="col-auto">
-                    <i class="far fa-id-badge"></i>
+                    <i class="fas fa-id-badge"></i>
                 </div>
                 <strong>{{comment.user}}</strong>
             </div>
