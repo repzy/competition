@@ -3,14 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Competition;
-use App\Entity\CompetitionClass;
 use App\Entity\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Competition|null find($id, $lockMode = null, $lockVersion = null)
@@ -56,32 +52,12 @@ class CompetitionRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    // /**
-    //  * @return Competition[] Returns an array of Competition objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllIds()
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder->select('c.id');
+        $queryBuilder->orderBy('c.id', 'DESC');
 
-    /*
-    public function findOneBySomeField($value): ?Competition
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $queryBuilder->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
     }
-    */
 }
