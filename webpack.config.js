@@ -18,6 +18,8 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('datepicker', './assets/js/datepicker.js')
+    .addEntry('wysiwyg', './assets/js/wysiwyg.js')
     .addEntry('vue-comment', './assets/vue/comments/index.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

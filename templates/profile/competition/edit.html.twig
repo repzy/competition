@@ -53,6 +53,8 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('datepicker') }}
+    {{ encore_entry_script_tags('wysiwyg') }}
 
     <script type="text/javascript">
         let $addTagButton = document.createElement('button');
