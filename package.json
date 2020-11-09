@@ -9,20 +9,19 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^12.4.0",
-        "@ckeditor/ckeditor5-vue": "^1.0.0",
+        "@ckeditor/ckeditor5-build-classic": "^23.1.0",
+        "@ckeditor/ckeditor5-vue": "^1.0.3",
         "@fortawesome/fontawesome-free": "^5.11.2",
-        "@symfony/webpack-encore": "^0.28.2",
-        "bootstrap": "^4.4.1",
-        "jquery": "3.4.1",
-        "moment": "^2.24.0",
-        "node-sass": "^4.12.0",
-        "pikaday": "^1.8.0",
-        "popper.js": "^1.16.0",
-        "sass-loader": "^7.3.1",
-        "vue": "^2.6.10",
-        "vue-loader": "^15.7.2",
-        "vue-template-compiler": "^2.6.10",
-        "webpack-notifier": "^1.8.0"
+        "@symfony/webpack-encore": "^0.31.0",
+        "bootstrap": "^4.5.3",
+        "jquery": "^3.5.1",
+        "moment": "^2.29.1",
+        "node-sass": "^5.0.0",
+        "pikaday": "^1.8.2",
+        "popper.js": "^1.16.1",
+        "sass-loader": "^10.0.5",
+        "vue": "^2.6.12",
+        "vue-loader": "^15.9.5",
+        "vue-template-compiler": "^2.6.12"
     }
 }

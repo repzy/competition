@@ -36,7 +36,7 @@ services:
             - php
 
     node:
-        image: node:12.10-alpine
+        image: node:15.1.0-alpine3.12
         container_name: bzstu_node
         ports:
           - "3000:3000"
