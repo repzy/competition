@@ -20,7 +20,7 @@ services:
         volumes:
             - .:/var/www
         entrypoint: ["sh", "-c"]
-        command: ["composer install --no-dev --optimize-autoloader && php-fpm"]
+        command: ["composer install && php-fpm"]
         working_dir: /var/www
         links:
             - db
