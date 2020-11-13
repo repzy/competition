@@ -20,7 +20,7 @@ services:
         volumes:
             - .:/var/www
         entrypoint: ["sh", "-c"]
-        command: ["composer install && php-fpm"]
+        command: ["composer install --no-dev --optimize-autoloader && php-fpm"]
         working_dir: /var/www
         links:
             - db
@@ -46,7 +46,7 @@ services:
         env_file:
             - .env
         entrypoint: ["sh", "-c"]
-        command: ["yarn install"]
+        command: ["yarn install --production"]
         volumes:
             - .:/var/www
             - ./node_modules:/var/www/node_modules
