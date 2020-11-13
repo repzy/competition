@@ -11,6 +11,7 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
+            echo SYMFONY_ENV=prod >> sshenv
             echo MYSQL_USER=$MYSQL_USER >> sshenv
             echo MYSQL_PASSWORD=$MYSQL_PASSWORD >> sshenv
             echo MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD >> sshenv
